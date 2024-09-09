@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search">Search</string>
+    <string name="media">Media library</string>
+    <string name="setting">Settings</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="share_app">Share app</string>
+    <string name="write_support">Support</string>
+    <string name="privacy">Privacy</string>
+</resources>
