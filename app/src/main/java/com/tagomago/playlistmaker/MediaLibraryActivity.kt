@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 class MediaLibraryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_media_library)
 
         val backButton = findViewById<Button>(R.id.back)
