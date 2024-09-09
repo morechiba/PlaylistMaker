@@ -11,6 +11,7 @@
         android:layout_marginBottom="24dp"
         android:orientation="horizontal">
         <Button
+            android:id="@+id/back"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:backgroundTint="@color/white"

@@ -1,5 +1,7 @@
 package com.tagomago.playlistmaker
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -19,24 +21,23 @@ class MainActivity : AppCompatActivity() {
 
         val buttonSearch = findViewById<Button>(R.id.search)
 
-        val imageClickListener: View.OnClickListener = object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                Toast.makeText(this@MainActivity, "Нажали на кнопку SEARCH", Toast.LENGTH_SHORT).show()
-            }
+        buttonSearch.setOnClickListener {
+            val displayIntent = Intent(this, SearchActivity::class.java)
+            startActivity(displayIntent)
         }
-
-        buttonSearch.setOnClickListener(imageClickListener)
 
         val buttonMedia = findViewById<Button>(R.id.media)
 
         buttonMedia.setOnClickListener {
-            Toast.makeText(this@MainActivity, "Нажали на кнопку MEDIA LIBRARY", Toast.LENGTH_SHORT).show()
+            val displayIntent = Intent(this, MediaLibraryActivity::class.java)
+            startActivity(displayIntent)
         }
 
         val buttonSetting = findViewById<Button>(R.id.setting)
 
         buttonSetting.setOnClickListener {
-            Toast.makeText(this@MainActivity, "Нажали на кнопку SETTINGS", Toast.LENGTH_SHORT).show()
+            val displayIntent = Intent(this, SettingsActivity::class.java)
+            startActivity(displayIntent)
         }
 
     }
