@@ -7,4 +7,5 @@
     <color name="button_bg">#FFFFFFFF</color>
     <color name="button_text">#1A1B22</color>
     <color name="text">#1A1B22</color>
+    <color name="icon">#AEAFB4</color>
 </resources>
