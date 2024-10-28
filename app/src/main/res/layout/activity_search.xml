@@ -2,32 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    style="@style/LayoutBase">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="24dp"
-        android:orientation="horizontal">
+        style="@style/TitleBlock">
         <Button
             android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:backgroundTint="@color/white"
-            android:textSize="@dimen/text_big"
-            app:icon="@drawable/arrow_back"
-            app:iconTint="@color/text" />
+            style="@style/ArrowBack"
+            />
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TitleText"
             android:text="@string/search"
-            android:textColor="@color/text"
-            android:textSize="@dimen/text_big"
-            android:textFontWeight="500"
-            android:paddingTop="10dp"
-            android:paddingLeft="12dp"
             />
     </LinearLayout>
 </LinearLayout>
