@@ -1,8 +1,10 @@
 package com.tagomago.playlistmaker
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -24,6 +26,13 @@ class SettingsActivity : AppCompatActivity() {
             val displayIntent = Intent(this, MainActivity::class.java)
             finish()
             startActivity(displayIntent)
+        }
+
+        val buttonPrivacy = findViewById<TextView>(R.id.privacy)
+
+        buttonPrivacy.setOnClickListener {
+            val displayIntent = Intent(Intent.ACTION_VIEW)
+            displayIntent.data = Uri.parse("https://practicum.yandex.ru/")
         }
     }
 }

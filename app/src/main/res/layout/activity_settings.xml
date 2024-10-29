@@ -34,18 +34,21 @@
     </FrameLayout>
 
     <TextView
+        android:id="@+id/share"
         style="@style/SettingPoint"
         android:text="@string/share_app"
         app:drawableEndCompat="@drawable/share"
         />
 
     <TextView
+        android:id="@+id/support"
         style="@style/SettingPoint"
         android:text="@string/write_support"
         app:drawableEndCompat="@drawable/support"
         />
 
     <TextView
+        android:id="@+id/privacy"
         style="@style/SettingPoint"
         android:text="@string/privacy"
         app:drawableEndCompat="@drawable/arr"
