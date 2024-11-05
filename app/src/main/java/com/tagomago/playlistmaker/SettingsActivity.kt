@@ -32,7 +32,7 @@ class SettingsActivity : AppCompatActivity() {
 
         buttonShare.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
-            val message = "@sting/share_link"
+            val message = getString(R.string.share_link)
             shareIntent.setType("text/plain")
             shareIntent.putExtra(Intent.EXTRA_TEXT, message)
             startActivity(shareIntent)
@@ -55,7 +55,8 @@ class SettingsActivity : AppCompatActivity() {
         val buttonPrivacy = findViewById<TextView>(R.id.privacy)
 
         buttonPrivacy.setOnClickListener {
-            val displayIntent = Intent(Intent.ACTION_VIEW, Uri.parse("@string/privacy_link"))
+            val link = getString(R.string.privacy_link)
+            val displayIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
             startActivity(displayIntent)
         }
     }
