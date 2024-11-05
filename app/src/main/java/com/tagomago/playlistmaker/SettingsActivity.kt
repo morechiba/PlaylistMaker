@@ -28,11 +28,35 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(displayIntent)
         }
 
+        val buttonShare = findViewById<TextView>(R.id.share)
+
+        buttonShare.setOnClickListener {
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            val message = "@sting/share_link"
+            shareIntent.setType("text/plain")
+            shareIntent.putExtra(Intent.EXTRA_TEXT, message)
+            startActivity(shareIntent)
+        }
+
+        val buttonSupport = findViewById<TextView>(R.id.support)
+
+        buttonSupport.setOnClickListener {
+            val supportIntent = Intent(Intent.ACTION_SENDTO)
+            val subject = getString(R.string.support_mail_subject)
+            val message = getString(R.string.support_mail_message)
+            val mail = getString(R.string.support_mail)
+            supportIntent.data = Uri.parse("mailto:");
+            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
+            supportIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
+            supportIntent.putExtra(Intent.EXTRA_TEXT, message)
+            startActivity(supportIntent)
+        }
+
         val buttonPrivacy = findViewById<TextView>(R.id.privacy)
 
         buttonPrivacy.setOnClickListener {
-            val displayIntent = Intent(Intent.ACTION_VIEW)
-            displayIntent.data = Uri.parse("https://practicum.yandex.ru/")
+            val displayIntent = Intent(Intent.ACTION_VIEW, Uri.parse("@string/privacy_link"))
+            startActivity(displayIntent)
         }
     }
 }
