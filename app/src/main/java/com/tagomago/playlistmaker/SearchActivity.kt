@@ -3,6 +3,7 @@ package com.tagomago.playlistmaker
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -24,6 +25,11 @@ class SearchActivity : AppCompatActivity() {
             val displayIntent = Intent(this, MainActivity::class.java)
             finish()
             startActivity(displayIntent)
+        }
+
+        val editText = findViewById<EditText>(R.id.search)
+        editText.setOnClickListener {
+
         }
     }
 }
