@@ -6,4 +6,5 @@
     <color name="text">#FFFFFFFF</color>
     <color name="input_bg">#FFFFFFFF</color>
     <color name="icon">#1A1B22</color>
+    <color name="input_clear">#000000</color>
 </resources>
