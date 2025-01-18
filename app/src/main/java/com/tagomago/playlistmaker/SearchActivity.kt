@@ -2,8 +2,10 @@ package com.tagomago.playlistmaker
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -30,6 +32,19 @@ class SearchActivity : AppCompatActivity() {
         val editText = findViewById<EditText>(R.id.search)
         editText.setOnClickListener {
 
+        }
+
+        val searchClear = findViewById<ImageView>(R.id.search_clear)
+        searchClear.setOnClickListener {
+            editText.setText("")
+        }
+
+         fun clearButtonVisibility(s: CharSequence?): Int {
+            return if (s.isNullOrEmpty()) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
         }
     }
 }
