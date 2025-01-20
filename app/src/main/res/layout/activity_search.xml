@@ -21,7 +21,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:background="@drawable/input_bg"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <EditText
             android:id="@+id/search"
@@ -46,6 +48,6 @@
             android:layout_height="36dp"
             android:layout_gravity="end|center_vertical"
             android:src="@drawable/clear"
-            android:visibility="visible" />
+            android:visibility="gone" />
     </FrameLayout>
 </LinearLayout>
