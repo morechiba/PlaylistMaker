@@ -18,8 +18,8 @@ import androidx.core.view.WindowInsetsCompat
 
 class SearchActivity : AppCompatActivity() {
 
-    var editTextValue: String? = null
-    lateinit var editText:EditText
+    private var editTextValue: String? = null
+    private lateinit var editText:EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +37,7 @@ class SearchActivity : AppCompatActivity() {
 
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener {
-            val displayIntent = Intent(this, MainActivity::class.java)
             finish()
-            startActivity(displayIntent)
         }
 
 

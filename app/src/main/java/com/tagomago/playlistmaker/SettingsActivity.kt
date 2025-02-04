@@ -23,9 +23,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener {
-            val displayIntent = Intent(this, MainActivity::class.java)
             finish()
-            startActivity(displayIntent)
         }
 
         val buttonShare = findViewById<TextView>(R.id.share)
