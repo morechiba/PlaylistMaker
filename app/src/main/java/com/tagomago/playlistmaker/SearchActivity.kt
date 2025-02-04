@@ -17,6 +17,10 @@ import androidx.core.view.WindowInsetsCompat
 
 
 class SearchActivity : AppCompatActivity() {
+
+    var editTextValue: String? = null
+    lateinit var editText:EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,6 +31,10 @@ class SearchActivity : AppCompatActivity() {
             insets
         }
 
+
+
+        editText = findViewById<EditText>(R.id.search)
+
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener {
             val displayIntent = Intent(this, MainActivity::class.java)
@@ -34,7 +42,7 @@ class SearchActivity : AppCompatActivity() {
             startActivity(displayIntent)
         }
 
-        val editText = findViewById<EditText>(R.id.search)
+
 
         val searchClear = findViewById<ImageView>(R.id.search_clear)
         searchClear.setOnClickListener {
@@ -70,6 +78,19 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         editText.addTextChangedListener(simpleTextWatcher)
+
+    }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        editTextValue = editText.getText().toString()
+        outState.putString("editTextValue", editTextValue)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        editText.setText(savedInstanceState.getString("editTextValue"))
     }
 
 }
