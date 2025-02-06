@@ -9,6 +9,7 @@
     <color name="button_text">#1A1B22</color>
     <color name="text">#1A1B22</color>
     <color name="icon">#AEAFB4</color>
+    <color name="icon_setting">#AEAFB4</color>
     <color name="input_bg">#E6E8EB</color>
     <color name="input_clear">#99A2AD</color>
     <color name="input_text">#1A1B22</color>
