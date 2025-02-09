@@ -2,32 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    style="@style/LayoutBase">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="24dp"
-        android:orientation="horizontal">
+        style="@style/TitleBlock">
         <Button
             android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:backgroundTint="@color/white"
-            android:textSize="@dimen/text_big"
-            app:icon="@drawable/arrow_back"
-            app:iconTint="@color/text" />
+            style="@style/ArrowBack"
+            />
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TitleText"
             android:text="@string/setting"
-            android:textColor="@color/text"
-            android:textSize="@dimen/text_big"
-            android:textFontWeight="500"
-            android:paddingTop="10dp"
-            android:paddingLeft="12dp"
             />
     </LinearLayout>
     <FrameLayout
@@ -37,58 +21,36 @@
         android:paddingTop="@dimen/list_padding"
         >
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_small"
             android:text="@string/dark_theme"
-            android:textColor="@color/black"
-            android:layout_gravity="start"
+            style="@style/SettingPointSwitch"
             />
         <Switch
             android:layout_width="56dp"
             android:layout_height="40dp"
-            android:layout_marginTop="-11dp"
-            android:layout_marginEnd="-9dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="5dp"
             android:layout_gravity="end"
             />
     </FrameLayout>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_height"
-        android:textSize="@dimen/text_small"
+        android:id="@+id/share"
+        style="@style/SettingPoint"
         android:text="@string/share_app"
-        android:textColor="@color/black"
-        android:layout_gravity="start"
-        android:paddingVertical="@dimen/list_padding"
-        android:paddingHorizontal="@dimen/padding_main"
         app:drawableEndCompat="@drawable/share"
-        android:layout_marginEnd="15px"
         />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_height"
-        android:textSize="@dimen/text_small"
+        android:id="@+id/support"
+        style="@style/SettingPoint"
         android:text="@string/write_support"
-        android:textColor="@color/black"
-        android:layout_gravity="start"
-        android:paddingVertical="@dimen/list_padding"
-        android:paddingHorizontal="@dimen/padding_main"
         app:drawableEndCompat="@drawable/support"
         />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_height"
-        android:textSize="@dimen/text_small"
+        android:id="@+id/privacy"
+        style="@style/SettingPoint"
         android:text="@string/privacy"
-        android:textColor="@color/black"
-        android:layout_gravity="start"
-        android:paddingVertical="@dimen/list_padding"
-        android:paddingHorizontal="@dimen/padding_main"
         app:drawableEndCompat="@drawable/arr"
         />
-
-
 </LinearLayout>

@@ -2,32 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
+    style="@style/LayoutBase"
     android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="24dp"
-        android:orientation="horizontal">
+
+    <LinearLayout style="@style/TitleBlock">
+
         <Button
             android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:backgroundTint="@color/white"
-            android:textSize="@dimen/text_big"
-            app:icon="@drawable/arrow_back"
-            app:iconTint="@color/text" />
+            style="@style/ArrowBack" />
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/search"
-            android:textColor="@color/text"
-            android:textSize="@dimen/text_big"
-            android:textFontWeight="500"
-            android:paddingTop="10dp"
-            android:paddingLeft="12dp"
-            />
+            style="@style/TitleText"
+            android:text="@string/search" />
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/input_bg"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@null"
+            android:drawablePadding="8dp"
+            android:fontFamily="@font/ys_display_regular"
+            android:hint="@string/search"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingHorizontal="12dp"
+            android:textColorHint="@color/icon"
+            android:textColor="@color/input_text"
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/search" />
+
+        <ImageView
+            android:id="@+id/search_clear"
+            android:layout_width="40dp"
+            android:layout_height="36dp"
+            android:layout_gravity="end|center_vertical"
+            android:src="@drawable/clear"
+            android:visibility="gone" />
+    </FrameLayout>
 </LinearLayout>

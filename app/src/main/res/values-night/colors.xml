@@ -3,5 +3,10 @@
     <color name="black">#FFFFFFFF</color>
     <color name="white">#FF000000</color>
     <color name="main_bg">#1A1B22</color>
+    <color name="layout_bg">#1A1B22</color>
     <color name="text">#FFFFFFFF</color>
+    <color name="input_bg">#FFFFFFFF</color>
+    <color name="icon">#1A1B22</color>
+    <color name="icon_setting">#FFFFFFFF</color>
+    <color name="input_clear">#000000</color>
 </resources>

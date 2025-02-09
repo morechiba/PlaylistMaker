@@ -7,4 +7,6 @@
     <string name="share_app">Share app</string>
     <string name="write_support">Support</string>
     <string name="privacy">Privacy</string>
+    <string name="support_mail_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="support_mail_message">Thanks to the developers for a cool app!</string>
 </resources>
