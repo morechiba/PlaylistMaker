@@ -47,8 +47,6 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
-
-
         val searchClear = findViewById<ImageView>(R.id.search_clear)
         searchClear.setOnClickListener {
             editText.setText("")
@@ -83,7 +81,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         editText.addTextChangedListener(simpleTextWatcher)
-
     }
 
 
