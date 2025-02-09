@@ -1,7 +1,6 @@
 package com.tagomago.playlistmaker
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,6 +16,18 @@ import androidx.core.view.WindowInsetsCompat
 
 
 class SearchActivity : AppCompatActivity() {
+
+    private var editTextValue: String? = SEARCH_TEXT
+    private lateinit var editText:EditText
+
+
+// В Kotlin для создания константной переменной мы используем companion object.
+// Ключ должен быть константным, чтобы мы точно знали, что он не изменится
+    companion object {
+        const val SEARCH = "SEARCH"
+        const val SEARCH_TEXT = ""
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,14 +38,14 @@ class SearchActivity : AppCompatActivity() {
             insets
         }
 
+
+
+        editText = findViewById<EditText>(R.id.search)
+
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener {
-            val displayIntent = Intent(this, MainActivity::class.java)
             finish()
-            startActivity(displayIntent)
         }
-
-        val editText = findViewById<EditText>(R.id.search)
 
         val searchClear = findViewById<ImageView>(R.id.search_clear)
         searchClear.setOnClickListener {
@@ -70,6 +81,18 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         editText.addTextChangedListener(simpleTextWatcher)
+    }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        editTextValue = editText.getText().toString()
+        outState.putString(SEARCH, editTextValue)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        editText.setText(savedInstanceState.getString(SEARCH))
     }
 
 }

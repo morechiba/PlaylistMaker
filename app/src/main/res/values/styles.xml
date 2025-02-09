@@ -21,7 +21,7 @@
     <style name="LayoutBase">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/layout_bg</item>
         <item name="android:orientation">vertical</item>
         <item name="android:textColor">@color/text</item>
     </style>
@@ -44,7 +44,7 @@
     <style name="ArrowBack" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_height">48dp</item>
-        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:backgroundTint">@color/layout_bg</item>
         <item name="android:textSize">@dimen/text_big</item>
         <item name="iconTint">@color/text</item>
         <item name="icon">@drawable/arrow_back</item>
