@@ -29,7 +29,7 @@
                 <TextView
                     android:id="@+id/trackName"
                     style="@style/TrackTitle"
-                    tools:text="Here Comes The Sun (Remastered 2009)" />
+                    tools:text="Yesterday (Remastered 2009)" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -37,6 +37,7 @@
                     <TextView
                         android:id="@+id/trackArtist"
                         style="@style/TrackText"
+                        android:layout_weight="1"
                         tools:text="The Beatles" />
                     <ImageView
                         android:layout_width="13dp"
