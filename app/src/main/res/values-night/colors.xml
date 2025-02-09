@@ -9,4 +9,5 @@
     <color name="icon">#1A1B22</color>
     <color name="icon_setting">#FFFFFFFF</color>
     <color name="input_clear">#000000</color>
+    <color name="track_text">#FFFFFF</color>
 </resources>
