@@ -51,7 +51,6 @@
 
             </LinearLayout>
             <ImageView
-                android:id="@+id/trackImage"
                 style="@style/TrackArr" />
         </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
