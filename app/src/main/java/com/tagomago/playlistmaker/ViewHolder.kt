@@ -4,25 +4,33 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-class ViewHolder(parentView: View) : RecyclerView.ViewHolder(parentView) {
+class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val trackName: TextView
     private val trackArtist: TextView
     private val trackTime: TextView
-    private val trackImage: TextView
+    private val trackImage: ImageView
 
     init {
-        trackName = parentView.findViewById(R.id.trackName)
-        trackArtist = parentView.findViewById(R.id.trackArtist)
-        trackTime = parentView.findViewById(R.id.trackTime)
-        trackImage = parentView.findViewById(R.id.trackImage)
+        trackName = itemView.findViewById(R.id.trackName)
+        trackArtist = itemView.findViewById(R.id.trackArtist)
+        trackTime = itemView.findViewById(R.id.trackTime)
+        trackImage = itemView.findViewById(R.id.trackImage)
     }
 
     fun bind(model: Track) {
         trackName.text = model.trackName
         trackArtist.text = model.artistName
         trackTime.text = model.trackTime
-        trackImage.text = model.artworkUrl100
+
+        Glide.with(itemView)
+            .load(model.artworkUrl100)
+            .centerCrop()
+            .placeholder(R.drawable.placeholder)
+            .into(trackImage)
+
     }
 }

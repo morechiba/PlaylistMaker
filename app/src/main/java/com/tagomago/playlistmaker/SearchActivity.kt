@@ -120,6 +120,9 @@ class SearchActivity : AppCompatActivity() {
             )
         )
 
+        recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+
         val adapter = Adapter(trackList)
         recycler.adapter = adapter
 
