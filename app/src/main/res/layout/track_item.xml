@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="4dp"
+            android:paddingEnd="12dp"
+            android:background="@color/layout_bg">
+
+            <ImageView
+                android:id="@+id/trackImage"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="@dimen/track_padding"
+                tools:src="@drawable/placeholder"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="14dp"
+                android:layout_weight="1"
+                >
+
+                <TextView
+                    android:id="@+id/trackName"
+                    style="@style/TrackTitle"
+                    tools:text="Yesterday (Remastered 2009)" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/trackArtist"
+                        style="@style/TrackText"
+                        android:layout_weight="1"
+                        tools:text="The Beatles" />
+                    <ImageView
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:src="@drawable/dot"/>
+                    <TextView
+                        android:id="@+id/trackTime"
+                        style="@style/TrackText"
+                        tools:text="4:01" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <ImageView
+                style="@style/TrackArr" />
+        </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
