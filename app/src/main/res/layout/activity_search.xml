@@ -16,7 +16,7 @@
             android:text="@string/search" />
     </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -51,7 +51,8 @@
             android:layout_gravity="end|center_vertical"
             android:src="@drawable/clear"
             android:visibility="gone" />
-    </FrameLayout>
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trackList"
         android:layout_width="match_parent"
@@ -61,6 +62,9 @@
     <LinearLayout
         android:id="@+id/placeholder_no_found"
         style="@style/Placeholder">
+        <ImageView
+            style="@style/PlaceholderImage"
+            android:src="@drawable/error_no_found" />
         <TextView
             style="@style/PlaceholderText"
             android:text="@string/no_found"></TextView>
@@ -69,11 +73,18 @@
     <LinearLayout
         android:id="@+id/placeholder_error_connection"
         style="@style/Placeholder">
+        <ImageView
+            style="@style/PlaceholderImage"
+            android:src="@drawable/error_no_connect" />
         <TextView
             style="@style/PlaceholderText"
             android:text="@string/error_connection"></TextView>
         <TextView
             style="@style/PlaceholderText"
             android:text="@string/error_connection_tip"></TextView>
+        <Button
+            style="@style/PlaceholderButton"
+            android:id="@+id/placeholder_button"
+            android:text="@string/button_update" />
     </LinearLayout>
 </LinearLayout>
