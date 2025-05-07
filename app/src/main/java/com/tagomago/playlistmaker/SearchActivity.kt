@@ -44,8 +44,7 @@ class SearchActivity : AppCompatActivity() {
         .build()
 
     private val itunesSearch = retrofit.create(ITunesApi::class.java)
-
-
+    val trackList = ArrayList<Track>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,19 +57,20 @@ class SearchActivity : AppCompatActivity() {
             insets
         }
 
-
-
         editText = findViewById<EditText>(R.id.search)
+
 
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener {
             finish()
         }
 
+        val recycler = findViewById<RecyclerView>(R.id.trackList)
         val searchClear = findViewById<ImageView>(R.id.search_clear)
         searchClear.setOnClickListener {
             editText.setText("")
             editText.clearFocus()
+            recycler.setVisibility(View.GONE)
 
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(editText.windowToken, 0)
@@ -102,11 +102,11 @@ class SearchActivity : AppCompatActivity() {
         }
         editText.addTextChangedListener(simpleTextWatcher)
 
-        val recycler = findViewById<RecyclerView>(R.id.trackList)
+
         val placeholderNoFound = findViewById<LinearLayout>(R.id.placeholder_no_found)
         val placeholderNoConnection = findViewById<LinearLayout>(R.id.placeholder_error_connection)
 
-        val trackList = ArrayList<Track>()
+
         val adapter = Adapter(trackList)
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
