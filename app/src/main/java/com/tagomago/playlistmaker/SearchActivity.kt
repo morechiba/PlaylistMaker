@@ -65,6 +65,8 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
+
+
         val recycler = findViewById<RecyclerView>(R.id.trackList)
         val searchClear = findViewById<ImageView>(R.id.search_clear)
         searchClear.setOnClickListener {
@@ -76,6 +78,7 @@ class SearchActivity : AppCompatActivity() {
             imm.hideSoftInputFromWindow(editText.windowToken, 0)
 
         }
+
 
 
         fun clearButtonVisibility(s: CharSequence?): Int {
@@ -111,55 +114,63 @@ class SearchActivity : AppCompatActivity() {
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
+
+
+        fun searchSong() {
+            trackList.clear()
+            if (editText.text.isNotEmpty()) {
+                placeholderNoFound.setVisibility(View.GONE)
+                placeholderNoConnection.setVisibility(View.GONE)
+                recycler.setVisibility(View.GONE)
+
+                itunesSearch.search(editText.text.toString()).enqueue(object : Callback<SearchResponse> {
+                    override fun onResponse(
+                        call: Call<SearchResponse>,
+                        response: Response<SearchResponse>
+                    ) {
+
+                        if (response.code() == 200) {
+                            if (response.body()?.results?.isNotEmpty() == true) {
+                                trackList.addAll(response.body()?.results!!)
+                                adapter.notifyDataSetChanged()
+                                if (trackList.isEmpty()) {
+                                    placeholderNoFound.setVisibility(View.VISIBLE)
+                                } else {
+                                    recycler.setVisibility(View.VISIBLE)
+                                }
+                            } else {
+                                placeholderNoFound.setVisibility(View.VISIBLE)
+                            }
+
+                        } else {
+                            placeholderNoConnection.setVisibility(View.VISIBLE)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                        placeholderNoConnection.setVisibility(View.VISIBLE)
+
+                    }
+
+                })
+            }
+        }
+
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-
-
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    trackList.clear()
-                    if (editText.text.isNotEmpty()) {
-                        placeholderNoFound.setVisibility(View.GONE)
-                        placeholderNoConnection.setVisibility(View.GONE)
-                        recycler.setVisibility(View.GONE)
-
-                        itunesSearch.search(editText.text.toString()).enqueue(object : Callback<SearchResponse> {
-                            override fun onResponse(
-                                call: Call<SearchResponse>,
-                                response: Response<SearchResponse>
-                            ) {
-
-                                if (response.code() == 200) {
-                                    if (response.body()?.results?.isNotEmpty() == true) {
-                                        trackList.addAll(response.body()?.results!!)
-                                        adapter.notifyDataSetChanged()
-                                        if (trackList.isEmpty()) {
-                                            placeholderNoFound.setVisibility(View.VISIBLE)
-                                        } else {
-                                            recycler.setVisibility(View.VISIBLE)
-                                        }
-                                    } else {
-                                        placeholderNoFound.setVisibility(View.VISIBLE)
-                                    }
-
-                                } else {
-                                    placeholderNoConnection.setVisibility(View.VISIBLE)
-                                }
-                            }
-
-                            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                                placeholderNoConnection.setVisibility(View.VISIBLE)
-                            }
-
-                        })
-                    }
+                    searchSong()
                 }
 
-
-                true
             }
                 false
 
+        }
+
+        val updateButton = findViewById<Button>(R.id.placeholder_button)
+        updateButton.setOnClickListener {
+            searchSong()
         }
     }
 
