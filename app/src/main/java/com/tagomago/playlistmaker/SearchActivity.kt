@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -102,6 +103,8 @@ class SearchActivity : AppCompatActivity() {
         editText.addTextChangedListener(simpleTextWatcher)
 
         val recycler = findViewById<RecyclerView>(R.id.trackList)
+        val placeholderNoFound = findViewById<LinearLayout>(R.id.placeholder_no_found)
+        val placeholderNoConnection = findViewById<LinearLayout>(R.id.placeholder_error_connection)
 
         val trackList = ArrayList<Track>()
         val adapter = Adapter(trackList)
@@ -114,30 +117,38 @@ class SearchActivity : AppCompatActivity() {
 
 
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    trackList.clear()
                     if (editText.text.isNotEmpty()) {
+                        placeholderNoFound.setVisibility(View.GONE)
+                        placeholderNoConnection.setVisibility(View.GONE)
+                        recycler.setVisibility(View.GONE)
+
                         itunesSearch.search(editText.text.toString()).enqueue(object : Callback<SearchResponse> {
                             override fun onResponse(
                                 call: Call<SearchResponse>,
                                 response: Response<SearchResponse>
                             ) {
+
                                 if (response.code() == 200) {
-                                    trackList.clear()
                                     if (response.body()?.results?.isNotEmpty() == true) {
                                         trackList.addAll(response.body()?.results!!)
                                         adapter.notifyDataSetChanged()
+                                        if (trackList.isEmpty()) {
+                                            placeholderNoFound.setVisibility(View.VISIBLE)
+                                        } else {
+                                            recycler.setVisibility(View.VISIBLE)
+                                        }
+                                    } else {
+                                        placeholderNoFound.setVisibility(View.VISIBLE)
                                     }
-                                    //   if (tracks.isEmpty()) {
-                                    //        showMessage(getString(R.string.nothing_found), "")
-                                    //   } else {
-                                    //        showMessage("", "")
-                                    //    }
+
                                 } else {
-                                    //  showMessage(getString(R.string.something_went_wrong), response.code().toString())
+                                    placeholderNoConnection.setVisibility(View.VISIBLE)
                                 }
                             }
 
                             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                                //    showMessage(getString(R.string.something_went_wrong), t.message.toString())
+                                placeholderNoConnection.setVisibility(View.VISIBLE)
                             }
 
                         })
