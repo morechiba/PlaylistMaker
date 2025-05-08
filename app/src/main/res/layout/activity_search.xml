@@ -40,7 +40,9 @@
             android:textColorHint="@color/icon"
             android:textColor="@color/input_text"
             android:textSize="16sp"
-            app:drawableStartCompat="@drawable/search" />
+            app:drawableStartCompat="@drawable/search"
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
 
         <ImageView
             android:id="@+id/search_clear"
@@ -50,9 +52,39 @@
             android:src="@drawable/clear"
             android:visibility="gone" />
     </FrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trackList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <LinearLayout
+        android:id="@+id/placeholder_no_found"
+        style="@style/Placeholder">
+        <ImageView
+            style="@style/PlaceholderImage"
+            android:src="@drawable/error_no_found" />
+        <TextView
+            style="@style/PlaceholderText"
+            android:text="@string/no_found"></TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/placeholder_error_connection"
+        style="@style/Placeholder">
+        <ImageView
+            style="@style/PlaceholderImage"
+            android:src="@drawable/error_no_connect" />
+        <TextView
+            style="@style/PlaceholderText"
+            android:text="@string/error_connection"></TextView>
+        <TextView
+            style="@style/PlaceholderText"
+            android:text="@string/error_connection_tip"></TextView>
+        <Button
+            style="@style/PlaceholderButton"
+            android:id="@+id/placeholder_button"
+            android:text="@string/button_update" />
+    </LinearLayout>
 </LinearLayout>

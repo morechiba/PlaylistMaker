@@ -11,6 +11,9 @@
     <string name="support_mail" translatable="false">morechiba@yandex.ru</string>
     <string name="support_mail_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="support_mail_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
-    <string name="share_link">https://practicum.yandex.ru/android-developer/</string>
-
+    <string name="share_link" translatable="false">https://practicum.yandex.ru/android-developer/</string>
+    <string name="no_found">Ничего не нашлось.</string>
+    <string name="error_connection">Проблемы со связью.</string>
+    <string name="error_connection_tip">Загрузка не удалась. Проверьте подключение к интернету.</string>
+    <string name="button_update">Обновить</string>
 </resources>
