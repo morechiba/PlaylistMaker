@@ -44,7 +44,7 @@ class SearchActivity : AppCompatActivity() {
         .build()
 
     private val itunesSearch = retrofit.create(ITunesApi::class.java)
-    val trackList = ArrayList<Track>()
+    val trackList = mutableListOf<Track>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
