@@ -129,9 +129,10 @@ class SearchActivity : AppCompatActivity() {
                         response: Response<SearchResponse>
                     ) {
 
-                        if (response.code() == 200) {
-                            if (response.body()?.results?.isNotEmpty() == true) {
-                                trackList.addAll(response.body()?.results!!)
+                        if (response.isSuccessful) {
+                            val resultList = response.body()?.results
+                            if (resultList?.isNotEmpty() == true) {
+                                trackList.addAll(resultList!!)
                                 adapter.notifyDataSetChanged()
                                 if (trackList.isEmpty()) {
                                     placeholderNoFound.setVisibility(View.VISIBLE)
