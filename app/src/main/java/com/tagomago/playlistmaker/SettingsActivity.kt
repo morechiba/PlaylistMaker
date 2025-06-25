@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +25,14 @@ class SettingsActivity : AppCompatActivity() {
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener {
             finish()
+        }
+
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+        val app = applicationContext as App
+        themeSwitcher.isChecked = app.darkTheme
+
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
         }
 
         val buttonShare = findViewById<TextView>(R.id.share)
@@ -57,5 +66,7 @@ class SettingsActivity : AppCompatActivity() {
             val displayIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
             startActivity(displayIntent)
         }
+
+
     }
 }
