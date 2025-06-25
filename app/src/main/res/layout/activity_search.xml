@@ -61,6 +61,21 @@
         style="@style/searchHint"
         android:text="@string/search_hint" />
 
+    <LinearLayout
+        android:id="@+id/search_history"
+        style="@style/searchHistory">
+        <TextView
+            style="@style/searchHistoryTitle"
+            android:text="@string/search_history_title"></TextView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trackList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        <Button style="@style/PlaceholderButton"
+            android:id="@+id/search_history_button"
+            android:text="@string/button_search_clear"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/placeholder_no_found"
@@ -90,10 +105,5 @@
             android:id="@+id/placeholder_button"
             android:text="@string/button_update" />
     </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </LinearLayout>
