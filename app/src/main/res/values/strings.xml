@@ -16,4 +16,5 @@
     <string name="error_connection">Проблемы со связью.</string>
     <string name="error_connection_tip">Загрузка не удалась. Проверьте подключение к интернету.</string>
     <string name="button_update">Обновить</string>
+    <string name="search_hint">Введите название для поиска.</string>
 </resources>

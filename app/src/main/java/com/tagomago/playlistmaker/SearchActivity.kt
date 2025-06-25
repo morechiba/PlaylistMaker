@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -29,6 +30,7 @@ class SearchActivity : AppCompatActivity() {
 
     private var editTextValue: String? = SEARCH_TEXT
     private lateinit var editText:EditText
+    private lateinit var searchHint:TextView
 
 
 // В Kotlin для создания константной переменной мы используем companion object.
@@ -58,12 +60,28 @@ class SearchActivity : AppCompatActivity() {
         }
 
         editText = findViewById<EditText>(R.id.search)
-
+        searchHint = findViewById<TextView>(R.id.searchHint)
 
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener {
             finish()
         }
+
+        editText.setOnFocusChangeListener { view, hasFocus ->
+            searchHint.visibility = if (hasFocus && editText.text.isEmpty()) View.VISIBLE else View.GONE
+        }
+
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                searchHint.visibility = if (editText.hasFocus() && p0?.isEmpty() == true) View.VISIBLE else View.GONE
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
 
 
 

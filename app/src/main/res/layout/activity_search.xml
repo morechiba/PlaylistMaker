@@ -53,11 +53,14 @@
             android:visibility="gone" />
     </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+
+
+     <TextView
+        android:id="@+id/searchHint"
+        style="@style/searchHint"
+        android:text="@string/search_hint" />
+
 
     <LinearLayout
         android:id="@+id/placeholder_no_found"
@@ -87,4 +90,10 @@
             android:id="@+id/placeholder_button"
             android:text="@string/button_update" />
     </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
 </LinearLayout>

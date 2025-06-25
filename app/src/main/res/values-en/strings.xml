@@ -13,4 +13,5 @@
     <string name="error_connection">Problems with connection.</string>
     <string name="error_connection_tip">Download failed. Check your internet connection.</string>
     <string name="button_update">Update</string>
+    <string name="search_hint">Enter a name to search.</string>
 </resources>
