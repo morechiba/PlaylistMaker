@@ -32,8 +32,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var editText:EditText
     private lateinit var searchHint:TextView
 
-
-// В Kotlin для создания константной переменной мы используем companion object.
+    // В Kotlin для создания константной переменной мы используем companion object.
 // Ключ должен быть константным, чтобы мы точно знали, что он не изменится
     companion object {
         const val SEARCH = "SEARCH"
@@ -48,6 +47,9 @@ class SearchActivity : AppCompatActivity() {
     private val itunesSearch = retrofit.create(ITunesApi::class.java)
     val trackList = mutableListOf<Track>()
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -60,6 +62,8 @@ class SearchActivity : AppCompatActivity() {
 
         editText = findViewById<EditText>(R.id.search)
         searchHint = findViewById<TextView>(R.id.searchHint)
+        val placeholderNoFound = findViewById<LinearLayout>(R.id.placeholder_no_found)
+        val placeholderNoConnection = findViewById<LinearLayout>(R.id.placeholder_error_connection)
 
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener {
@@ -68,6 +72,8 @@ class SearchActivity : AppCompatActivity() {
 
         editText.setOnFocusChangeListener { view, hasFocus ->
             searchHint.visibility = if (hasFocus && editText.text.isEmpty()) View.VISIBLE else View.GONE
+            placeholderNoFound.setVisibility(View.GONE)
+            placeholderNoConnection.setVisibility(View.GONE)
         }
 
         editText.addTextChangedListener(object : TextWatcher {
@@ -82,6 +88,7 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
+
         val SharedPrefs = getSharedPreferences(PLAYLISTMAKER_PREFERENCES, MODE_PRIVATE)
         val searchHistory = SearchHistory(SharedPrefs)
         val trackListHistory = searchHistory.getTracks()
@@ -91,13 +98,19 @@ class SearchActivity : AppCompatActivity() {
         recyclerHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val searchHistoryBlock = findViewById<LinearLayout>(R.id.search_history)
 
+        val searchHistoryClear = findViewById<Button>(R.id.search_history_button)
+        searchHistoryClear.setOnClickListener{
+            searchHistoryBlock.setVisibility(View.GONE)
+            searchHistory.clearHistory()
+        }
+
         val recycler = findViewById<RecyclerView>(R.id.trackList)
         val searchClear = findViewById<ImageView>(R.id.search_clear)
         searchClear.setOnClickListener {
             editText.setText("")
             editText.clearFocus()
             recycler.setVisibility(View.GONE)
-            searchHistoryBlock.setVisibility(View.VISIBLE)
+            if(trackListHistory.size > 0) searchHistoryBlock.setVisibility(View.VISIBLE)
 
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(editText.windowToken, 0)
@@ -129,10 +142,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         editText.addTextChangedListener(simpleTextWatcher)
-
-
-        val placeholderNoFound = findViewById<LinearLayout>(R.id.placeholder_no_found)
-        val placeholderNoConnection = findViewById<LinearLayout>(R.id.placeholder_error_connection)
 
         val adapter = Adapter(trackList)
         recycler.adapter = adapter
