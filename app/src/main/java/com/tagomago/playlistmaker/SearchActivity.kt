@@ -18,7 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.internal.ViewUtils.hideKeyboard
+import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
 import retrofit2.Retrofit
 import retrofit2.Callback
 import retrofit2.Call
@@ -47,7 +47,6 @@ class SearchActivity : AppCompatActivity() {
 
     private val itunesSearch = retrofit.create(ITunesApi::class.java)
     val trackList = mutableListOf<Track>()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +82,14 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
-
+        val SharedPrefs = getSharedPreferences(PLAYLISTMAKER_PREFERENCES, MODE_PRIVATE)
+        val searchHistory = SearchHistory(SharedPrefs)
+        val trackListHistory = searchHistory.getTracks()
+        val recyclerHistory = findViewById<RecyclerView>(R.id.trackListHistory)
+        val adapterHistory = Adapter(trackListHistory)
+        recyclerHistory.adapter = adapterHistory
+        recyclerHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val searchHistoryBlock = findViewById<LinearLayout>(R.id.search_history)
 
         val recycler = findViewById<RecyclerView>(R.id.trackList)
         val searchClear = findViewById<ImageView>(R.id.search_clear)
@@ -91,6 +97,7 @@ class SearchActivity : AppCompatActivity() {
             editText.setText("")
             editText.clearFocus()
             recycler.setVisibility(View.GONE)
+            searchHistoryBlock.setVisibility(View.VISIBLE)
 
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(editText.windowToken, 0)
@@ -126,7 +133,6 @@ class SearchActivity : AppCompatActivity() {
 
         val placeholderNoFound = findViewById<LinearLayout>(R.id.placeholder_no_found)
         val placeholderNoConnection = findViewById<LinearLayout>(R.id.placeholder_error_connection)
-
 
         val adapter = Adapter(trackList)
         recycler.adapter = adapter

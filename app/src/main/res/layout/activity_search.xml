@@ -53,9 +53,6 @@
             android:visibility="gone" />
     </FrameLayout>
 
-
-
-
      <TextView
         android:id="@+id/searchHint"
         style="@style/searchHint"
