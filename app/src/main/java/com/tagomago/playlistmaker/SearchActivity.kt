@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -48,8 +49,6 @@ class SearchActivity : AppCompatActivity() {
     val trackList = mutableListOf<Track>()
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -89,10 +88,12 @@ class SearchActivity : AppCompatActivity() {
         })
 
 
+
         val SharedPrefs = getSharedPreferences(PLAYLISTMAKER_PREFERENCES, MODE_PRIVATE)
         val searchHistory = SearchHistory(SharedPrefs)
         val trackListHistory = searchHistory.getTracks()
         val recyclerHistory = findViewById<RecyclerView>(R.id.trackListHistory)
+
         val adapterHistory = Adapter(trackListHistory)
         recyclerHistory.adapter = adapterHistory
         recyclerHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -116,6 +117,7 @@ class SearchActivity : AppCompatActivity() {
             imm.hideSoftInputFromWindow(editText.windowToken, 0)
 
         }
+
 
 
 
@@ -146,8 +148,6 @@ class SearchActivity : AppCompatActivity() {
         val adapter = Adapter(trackList)
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-
 
         fun searchSong() {
             trackList.clear()

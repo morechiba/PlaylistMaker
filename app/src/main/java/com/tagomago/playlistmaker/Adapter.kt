@@ -1,8 +1,11 @@
 package com.tagomago.playlistmaker
 
+import android.content.Context.MODE_PRIVATE
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
+import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
 
 class Adapter(private val tracks: MutableList<Track>) : RecyclerView.Adapter<ViewHolder> () {
 
@@ -13,6 +16,13 @@ class Adapter(private val tracks: MutableList<Track>) : RecyclerView.Adapter<Vie
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(tracks[position])
+
+        holder.itemView.setOnClickListener {
+            val track = tracks[position]
+            val preferences = holder.itemView.context.getSharedPreferences(PLAYLISTMAKER_PREFERENCES, MODE_PRIVATE)
+            val searchHistory = SearchHistory(preferences)
+            searchHistory.saveTrack(track)
+        }
     }
 
     override fun getItemCount() = tracks.size
