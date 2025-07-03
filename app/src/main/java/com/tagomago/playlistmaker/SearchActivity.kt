@@ -63,14 +63,36 @@ class SearchActivity : AppCompatActivity() {
         searchHint = findViewById<TextView>(R.id.searchHint)
         val placeholderNoFound = findViewById<LinearLayout>(R.id.placeholder_no_found)
         val placeholderNoConnection = findViewById<LinearLayout>(R.id.placeholder_error_connection)
+        val searchHistoryBlock = findViewById<LinearLayout>(R.id.search_history)
+        val SharedPrefs = getSharedPreferences(PLAYLISTMAKER_PREFERENCES, MODE_PRIVATE)
+        val searchHistory = SearchHistory(SharedPrefs)
+        var trackListHistory = searchHistory.getTracks()
+        val recyclerHistory = findViewById<RecyclerView>(R.id.trackListHistory)
+        var adapterHistory = Adapter(trackListHistory)
 
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener {
             finish()
         }
+        fun updateTrackListHistory() {
+            trackListHistory = searchHistory.getTracks()
+            trackListHistory.reverse()
+            adapterHistory = Adapter(trackListHistory)
+            recyclerHistory.adapter = adapterHistory
+            recyclerHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            if(trackListHistory.size > 0) searchHistoryBlock.setVisibility(View.VISIBLE)
+        }
+        updateTrackListHistory()
 
         editText.setOnFocusChangeListener { view, hasFocus ->
-            searchHint.visibility = if (hasFocus && editText.text.isEmpty()) View.VISIBLE else View.GONE
+                if (hasFocus && editText.text.isEmpty())
+                {
+                    searchHint.visibility = View.VISIBLE
+                    searchHistoryBlock.visibility = View.GONE}
+                else {
+                    searchHint.visibility = View.GONE
+                    updateTrackListHistory()
+                }
             placeholderNoFound.setVisibility(View.GONE)
             placeholderNoConnection.setVisibility(View.GONE)
         }
@@ -87,22 +109,11 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
-
-
-        val SharedPrefs = getSharedPreferences(PLAYLISTMAKER_PREFERENCES, MODE_PRIVATE)
-        val searchHistory = SearchHistory(SharedPrefs)
-        var trackListHistory = searchHistory.getTracks()
-        val recyclerHistory = findViewById<RecyclerView>(R.id.trackListHistory)
-
-        val adapterHistory = Adapter(trackListHistory)
-        recyclerHistory.adapter = adapterHistory
-        recyclerHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        val searchHistoryBlock = findViewById<LinearLayout>(R.id.search_history)
-
         val searchHistoryClear = findViewById<Button>(R.id.search_history_button)
         searchHistoryClear.setOnClickListener{
             searchHistoryBlock.setVisibility(View.GONE)
             searchHistory.clearHistory()
+            updateTrackListHistory()
         }
 
         val recycler = findViewById<RecyclerView>(R.id.trackList)
@@ -111,16 +122,12 @@ class SearchActivity : AppCompatActivity() {
             editText.setText("")
             editText.clearFocus()
             recycler.setVisibility(View.GONE)
-            trackListHistory = searchHistory.getTracks()
-            if(trackListHistory.size > 0) searchHistoryBlock.setVisibility(View.VISIBLE)
+            updateTrackListHistory()
 
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(editText.windowToken, 0)
 
         }
-
-
-
 
         fun clearButtonVisibility(s: CharSequence?): Int {
             return if (s.isNullOrEmpty()) {
