@@ -91,7 +91,7 @@ class SearchActivity : AppCompatActivity() {
 
         val SharedPrefs = getSharedPreferences(PLAYLISTMAKER_PREFERENCES, MODE_PRIVATE)
         val searchHistory = SearchHistory(SharedPrefs)
-        val trackListHistory = searchHistory.getTracks()
+        var trackListHistory = searchHistory.getTracks()
         val recyclerHistory = findViewById<RecyclerView>(R.id.trackListHistory)
 
         val adapterHistory = Adapter(trackListHistory)
@@ -111,6 +111,7 @@ class SearchActivity : AppCompatActivity() {
             editText.setText("")
             editText.clearFocus()
             recycler.setVisibility(View.GONE)
+            trackListHistory = searchHistory.getTracks()
             if(trackListHistory.size > 0) searchHistoryBlock.setVisibility(View.VISIBLE)
 
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
