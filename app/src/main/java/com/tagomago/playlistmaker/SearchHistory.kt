@@ -15,7 +15,7 @@ class SearchHistory(val sharedPrefs: SharedPreferences) {
     fun getTracks(): MutableList<Track>{
         val searchHistory: String? = sharedPrefs.getString(SEARCH_HISTORY, "")
         var trackList: MutableList<Track> = mutableListOf<Track>()
-        if(searchHistory?.isEmpty()!!){
+        if(searchHistory?.isNullOrEmpty()){
 
         } else {
             val item = object : TypeToken<MutableList<Track>>() {}.type
@@ -26,8 +26,8 @@ class SearchHistory(val sharedPrefs: SharedPreferences) {
 
     fun saveTrack(track: Track) {
         var searchHistory: String? = sharedPrefs.getString(SEARCH_HISTORY, "")
-
-        var trackList: MutableList<Track> = gson.fromJson(searchHistory, object : TypeToken<MutableList<Track>>() {}.type) ?: mutableListOf<Track>()
+        val item = object : TypeToken<MutableList<Track>>() {}.type
+        var trackList: MutableList<Track> = gson.fromJson(searchHistory, item) ?: mutableListOf<Track>()
         trackList.removeIf { it == track }
         if (trackList.size == 10) {
             trackList.removeAt(0)
