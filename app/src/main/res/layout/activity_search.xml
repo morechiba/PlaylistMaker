@@ -64,14 +64,18 @@
         <TextView
             style="@style/searchHistoryTitle"
             android:text="@string/search_history_title"></TextView>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/trackListHistory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-        <Button style="@style/SearchHistoryButton"
-            android:id="@+id/search_history_button"
-            android:text="@string/button_search_clear"/>
+        <LinearLayout
+            style="@style/SearchHistoryWrap">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/trackListHistory"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            <Button style="@style/SearchHistoryButton"
+                android:id="@+id/search_history_button"
+                android:text="@string/button_search_clear"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

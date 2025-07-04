@@ -15,7 +15,7 @@ class SearchHistory(val sharedPrefs: SharedPreferences) {
     fun getTracks(): MutableList<Track>{
         val searchHistory: String? = sharedPrefs.getString(SEARCH_HISTORY, "")
         var trackList: MutableList<Track> = mutableListOf<Track>()
-        if(searchHistory?.isNullOrEmpty()){
+        if(searchHistory.isNullOrEmpty()){
 
         } else {
             val item = object : TypeToken<MutableList<Track>>() {}.type
