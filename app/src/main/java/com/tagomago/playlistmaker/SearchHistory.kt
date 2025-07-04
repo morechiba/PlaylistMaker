@@ -30,9 +30,9 @@ class SearchHistory(val sharedPrefs: SharedPreferences) {
         var trackList: MutableList<Track> = gson.fromJson(searchHistory, item) ?: mutableListOf<Track>()
         trackList.removeIf { it == track }
         if (trackList.size == 10) {
-            trackList.removeAt(0)
+            trackList.removeAt(9)
         }
-        trackList.add(track)
+        trackList.add(0, track)
         searchHistory = gson.toJson(trackList)
         sharedPrefs.edit()
             .putString(SEARCH_HISTORY, searchHistory)

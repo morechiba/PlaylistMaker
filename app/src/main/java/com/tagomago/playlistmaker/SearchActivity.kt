@@ -76,7 +76,6 @@ class SearchActivity : AppCompatActivity() {
         }
         fun updateTrackListHistory() {
             trackListHistory = searchHistory.getTracks()
-            trackListHistory.reverse()
             adapterHistory = Adapter(trackListHistory)
             recyclerHistory.adapter = adapterHistory
             recyclerHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
