@@ -5,14 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate
 
 
 class App: Application() {
-    companion object{
-        const val PLAYLISTMAKER_PREFERENCES = "playlistmaker_preferences"
-        const val MODE_NIGHTS = "mode_nights_yes"
-    }
-
-        var darkTheme = false
-
-
+         var darkTheme = false
 
         override fun onCreate() {
             super.onCreate()
@@ -44,7 +37,8 @@ class App: Application() {
                 }
             )
         }
-
-
-
+    companion object{
+        const val PLAYLISTMAKER_PREFERENCES = "playlistmaker_preferences"
+        const val MODE_NIGHTS = "mode_nights_yes"
+    }
 }
