@@ -14,24 +14,14 @@
             android:text="@string/setting"
             />
     </LinearLayout>
-    <FrameLayout
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/themeSwitcher"
+        android:text="Темная тема"
+        android:layout_marginHorizontal="16dp"
+        android:layout_gravity="start"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_height"
-        android:paddingHorizontal="@dimen/padding_main"
-        android:paddingTop="@dimen/list_padding"
-        >
-        <TextView
-            android:text="@string/dark_theme"
-            style="@style/SettingPointSwitch"
-            />
-        <Switch
-            android:layout_width="56dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="5dp"
-            android:layout_gravity="end"
-            />
-    </FrameLayout>
+        android:layout_height="60dp"/>
 
     <TextView
         android:id="@+id/share"
