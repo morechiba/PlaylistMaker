@@ -5,5 +5,9 @@ data class Track(
     val artistName: String, // Имя исполнителя
     val trackTimeMillis: Long, // Продолжительность трека
     val artworkUrl100: String, // Ссылка на изображение обложки
-    val trackId: Long // Уникальный идентификатор трека на сервере iTunes
+    val trackId: Long, // Уникальный идентификатор трека на сервере iTunes
+    val collectionName: String, // Название альбома
+    val releaseDate: Int, // Год релиза трека
+    val primaryGenreName: String, // Жанр трека
+    val country: String // Страна исполнителя
 )

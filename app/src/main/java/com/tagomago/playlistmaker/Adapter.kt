@@ -1,10 +1,14 @@
 package com.tagomago.playlistmaker
 
 import android.content.Context.MODE_PRIVATE
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Button
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
 
 class Adapter(private val tracks: MutableList<Track>) : RecyclerView.Adapter<ViewHolder> () {
@@ -22,6 +26,13 @@ class Adapter(private val tracks: MutableList<Track>) : RecyclerView.Adapter<Vie
             val preferences = holder.itemView.context.getSharedPreferences(PLAYLISTMAKER_PREFERENCES, MODE_PRIVATE)
             val searchHistory = SearchHistory(preferences)
             searchHistory.saveTrack(track)
+
+            val displayIntent = Intent(holder.itemView.context, PlayerActivity::class.java)
+            val gson = Gson()
+            val trackData: String = gson.toJson(track)
+            displayIntent.putExtra("trackData", trackData)
+            holder.itemView.context.startActivity(displayIntent)
+
         }
     }
 
