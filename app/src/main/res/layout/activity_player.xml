@@ -39,15 +39,15 @@
         app:layout_constraintEnd_toStartOf="@id/right_guideline"
         app:layout_constraintStart_toStartOf="@id/left_guideline"
         app:layout_constraintTop_toTopOf="parent"
-        app:src="@drawable/placeholder_cover" />
+        tools:src="@drawable/placeholder_cover" />
 
     <TextView
         android:id="@+id/track_name"
         style="@style/TrackTitlePlayer"
-        app:text="Yesterday (Remastered 2009)" />
+        tools:text="Yesterday (Remastered 2009)" />
     <TextView
         android:id="@+id/track_artist"
         style="@style/TrackAtrist"
-        app:text="The Beatles" />
+        tools:text="The Beatles" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
