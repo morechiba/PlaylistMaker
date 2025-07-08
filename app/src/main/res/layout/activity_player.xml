@@ -50,4 +50,19 @@
         style="@style/TrackAtrist"
         tools:text="The Beatles" />
 
+    <ImageButton
+        android:id="@+id/button_left"
+        style="@style/ButtonPlayerLeft"
+        app:layout_constraintHorizontal_chainStyle="spread_inside" />
+    <ImageButton
+        android:id="@+id/button_center"
+        style="@style/ButtonPlayerCenter" />
+    <ImageButton
+        android:id="@+id/button_right"
+        style="@style/ButtonPlayerRight" />
+
+    <TextView
+        android:id="@+id/track_time_position"
+        style="@style/TrackTime"
+        tools:text="0:30" />
 </androidx.constraintlayout.widget.ConstraintLayout>

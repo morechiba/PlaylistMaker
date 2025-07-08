@@ -7,6 +7,8 @@
     <color name="main_bg">#3772E7</color>
     <color name="button_bg">#FFFFFFFF</color>
     <color name="button_text">#1A1B22</color>
+    <color name="button_player_small">#401A1B22</color>
+    <color name="button_player_big">#1A1B22</color>
     <color name="text">#1A1B22</color>
     <color name="icon">#AEAFB4</color>
     <color name="icon_setting">#AEAFB4</color>

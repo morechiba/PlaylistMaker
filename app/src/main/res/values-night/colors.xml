@@ -10,4 +10,6 @@
     <color name="icon_setting">#FFFFFFFF</color>
     <color name="input_clear">#000000</color>
     <color name="track_text">#FFFFFF</color>
+    <color name="button_player_small">#40FFFFFF</color>
+    <color name="button_player_big">#FFFFFF</color>
 </resources>
