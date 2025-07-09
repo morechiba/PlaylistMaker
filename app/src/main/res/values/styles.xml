@@ -200,19 +200,6 @@
         <item name="layout_constraintEnd_toStartOf">@id/buttonRight</item>
         <item name="layout_constraintTop_toBottomOf">@id/trackArtist</item>
         <item name="android:layout_marginTop">30dp</item>
-
-
-    </style>
-    <style name="searchHint">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:gravity">center</item>
-        <item name="android:padding">20dp</item>
-        <item name="android:textColor">@color/text</item>
-        <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textSize">19sp</item>
-        <item name="android:textFontWeight">400</item>
-        <item name="android:visibility">gone</item>
     </style>
     <style name="searchHistory">
         <item name="android:layout_height">wrap_content</item>
@@ -227,7 +214,7 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:paddingHorizontal">8dp</item>
         <item name="android:paddingVertical">16dp</item>
-        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
