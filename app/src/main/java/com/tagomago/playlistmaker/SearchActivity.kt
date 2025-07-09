@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -185,12 +186,12 @@ class SearchActivity : AppCompatActivity() {
 
                         } else {
                             placeholderNoConnection.setVisibility(View.VISIBLE)
+
                         }
                     }
 
                     override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
                         placeholderNoConnection.setVisibility(View.VISIBLE)
-
                     }
 
                 })

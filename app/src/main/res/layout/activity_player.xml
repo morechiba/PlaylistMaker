@@ -60,7 +60,7 @@
     <TextView
         android:id="@+id/trackTimePosition"
         style="@style/TrackTime"
-        tools:text="0:30" />
+        android:text="0:30" />
 
     <TextView
         android:id="@+id/trackTimeLabel"
@@ -68,31 +68,31 @@
         style="@style/TrackInfoLabel"
         android:layout_marginTop="38dp"
         app:layout_constraintTop_toBottomOf="@id/trackTimePosition"
-        tools:text="Длительность" />
+        android:text="Длительность" />
     <TextView
         android:id="@+id/trackAlbumLabel"
         app:layout_constraintTag="track_album_tag"
         style="@style/TrackInfoLabel"
         app:layout_constraintTop_toBottomOf="@id/trackTime"
-        tools:text="Альбом" />
+        android:text="Альбом" />
     <TextView
         android:id="@+id/trackYearLabel"
         app:layout_constraintTag="track_year_tag"
         style="@style/TrackInfoLabel"
         app:layout_constraintTop_toBottomOf="@id/trackAlbum"
-        tools:text="Год" />
+        android:text="Год" />
     <TextView
         android:id="@+id/trackGenreLabel"
         app:layout_constraintTag="track_genre_tag"
         style="@style/TrackInfoLabel"
         app:layout_constraintTop_toBottomOf="@id/trackYear"
-        tools:text="Жанр" />
+        android:text="Жанр" />
     <TextView
         android:id="@+id/trackCountryLabel"
         app:layout_constraintTag="track_country_tag"
         style="@style/TrackInfoLabel"
         app:layout_constraintTop_toBottomOf="@id/trackGenre"
-        tools:text="Страна" />
+        android:text="Страна" />
 
     <TextView
         android:id="@+id/trackTime"
