@@ -31,7 +31,7 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
 
-        val trackData = intent.getStringExtra("trackData")
+        val trackData = intent.getStringExtra(TRACK_DATA)
         val gson = Gson()
         val track: Track = gson.fromJson(trackData, Track::class.java)
 

@@ -31,13 +31,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var editText:EditText
     private lateinit var searchHint:TextView
 
-    // В Kotlin для создания константной переменной мы используем companion object.
-// Ключ должен быть константным, чтобы мы точно знали, что он не изменится
-    companion object {
-        const val SEARCH = "SEARCH"
-        const val SEARCH_TEXT = ""
-    }
-
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com")
         .addConverterFactory(GsonConverterFactory.create())
@@ -192,6 +185,13 @@ class SearchActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         editText.setText(savedInstanceState.getString(SEARCH))
+    }
+
+    // В Kotlin для создания константной переменной мы используем companion object.
+// Ключ должен быть константным, чтобы мы точно знали, что он не изменится
+    companion object {
+        const val SEARCH = "SEARCH"
+        const val SEARCH_TEXT = ""
     }
 
 }

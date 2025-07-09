@@ -4,12 +4,11 @@ import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.Button
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
+
+const val TRACK_DATA = "trackData"
 
 class Adapter(private val tracks: MutableList<Track>) : RecyclerView.Adapter<ViewHolder> () {
 
@@ -30,7 +29,7 @@ class Adapter(private val tracks: MutableList<Track>) : RecyclerView.Adapter<Vie
             val displayIntent = Intent(holder.itemView.context, PlayerActivity::class.java)
             val gson = Gson()
             val trackData: String = gson.toJson(track)
-            displayIntent.putExtra("trackData", trackData)
+            displayIntent.putExtra(TRACK_DATA, trackData)
             holder.itemView.context.startActivity(displayIntent)
 
         }
