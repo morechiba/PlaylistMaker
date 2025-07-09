@@ -65,7 +65,7 @@ class PlayerActivity : AppCompatActivity() {
             trackYear.visibility = View.GONE
             trackYearLabel.visibility = View.GONE
         } else {
-            trackYear.text = track.releaseDate.SubString(0, 4)
+            trackYear.text = track.releaseDate.substring(0, 4)
         }
 
             Glide.with(this)
