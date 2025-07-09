@@ -49,7 +49,6 @@ class SearchActivity : AppCompatActivity() {
     private val itunesSearch = retrofit.create(ITunesApi::class.java)
     val trackList = mutableListOf<Track>()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -74,6 +73,7 @@ class SearchActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
+
         fun updateTrackListHistory() {
             trackListHistory = searchHistory.getTracks()
             adapterHistory = Adapter(trackListHistory)
@@ -174,13 +174,10 @@ class SearchActivity : AppCompatActivity() {
         }
 
         editText.setOnEditorActionListener { _, actionId, _ ->
-
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchSong()
             }
-
             false
-
         }
 
         val updateButton = findViewById<Button>(R.id.placeholder_button)
