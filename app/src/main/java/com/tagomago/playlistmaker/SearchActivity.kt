@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -26,19 +25,11 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.converter.gson.GsonConverterFactory
 
-
 class SearchActivity : AppCompatActivity() {
 
     private var editTextValue: String? = SEARCH_TEXT
     private lateinit var editText:EditText
     private lateinit var searchHint:TextView
-
-    // В Kotlin для создания константной переменной мы используем companion object.
-// Ключ должен быть константным, чтобы мы точно знали, что он не изменится
-    companion object {
-        const val SEARCH = "SEARCH"
-        const val SEARCH_TEXT = ""
-    }
 
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com")
@@ -47,7 +38,6 @@ class SearchActivity : AppCompatActivity() {
 
     private val itunesSearch = retrofit.create(ITunesApi::class.java)
     val trackList = mutableListOf<Track>()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +50,6 @@ class SearchActivity : AppCompatActivity() {
         }
 
         editText = findViewById<EditText>(R.id.search)
-        searchHint = findViewById<TextView>(R.id.searchHint)
         val placeholderNoFound = findViewById<LinearLayout>(R.id.placeholder_no_found)
         val placeholderNoConnection = findViewById<LinearLayout>(R.id.placeholder_error_connection)
         val searchHistoryBlock = findViewById<LinearLayout>(R.id.search_history)
@@ -74,6 +63,7 @@ class SearchActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
+
         fun updateTrackListHistory() {
             trackListHistory = searchHistory.getTracks()
             adapterHistory = Adapter(trackListHistory)
@@ -84,29 +74,9 @@ class SearchActivity : AppCompatActivity() {
         updateTrackListHistory()
 
         editText.setOnFocusChangeListener { view, hasFocus ->
-                if (hasFocus && editText.text.isEmpty())
-                {
-                    searchHint.visibility = View.VISIBLE
-                    searchHistoryBlock.visibility = View.GONE}
-                else {
-                    searchHint.visibility = View.GONE
-                    updateTrackListHistory()
-                }
             placeholderNoFound.setVisibility(View.GONE)
             placeholderNoConnection.setVisibility(View.GONE)
         }
-
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                searchHint.visibility = if (editText.hasFocus() && p0?.isEmpty() == true) View.VISIBLE else View.GONE
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        })
 
         val searchHistoryClear = findViewById<Button>(R.id.search_history_button)
         searchHistoryClear.setOnClickListener{
@@ -125,7 +95,6 @@ class SearchActivity : AppCompatActivity() {
 
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(editText.windowToken, 0)
-
         }
 
         fun clearButtonVisibility(s: CharSequence?): Int {
@@ -136,21 +105,17 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-
-        val simpleTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // empty
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchClear.visibility = clearButtonVisibility(s)
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                searchClear.visibility = clearButtonVisibility(p0)
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                // empty
+            override fun afterTextChanged(p0: Editable?) {
             }
-        }
-        editText.addTextChangedListener(simpleTextWatcher)
+        })
 
         val adapter = Adapter(trackList)
         recycler.adapter = adapter
@@ -161,6 +126,7 @@ class SearchActivity : AppCompatActivity() {
             if (editText.text.isNotEmpty()) {
                 placeholderNoFound.setVisibility(View.GONE)
                 placeholderNoConnection.setVisibility(View.GONE)
+                searchHistoryBlock.setVisibility(View.GONE)
                 recycler.setVisibility(View.GONE)
 
                 itunesSearch.search(editText.text.toString()).enqueue(object : Callback<SearchResponse> {
@@ -185,12 +151,12 @@ class SearchActivity : AppCompatActivity() {
 
                         } else {
                             placeholderNoConnection.setVisibility(View.VISIBLE)
+
                         }
                     }
 
                     override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
                         placeholderNoConnection.setVisibility(View.VISIBLE)
-
                     }
 
                 })
@@ -199,14 +165,9 @@ class SearchActivity : AppCompatActivity() {
 
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    searchSong()
-                }
-
+                searchSong()
             }
-                false
-
+            false
         }
 
         val updateButton = findViewById<Button>(R.id.placeholder_button)
@@ -224,6 +185,13 @@ class SearchActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         editText.setText(savedInstanceState.getString(SEARCH))
+    }
+
+    // В Kotlin для создания константной переменной мы используем companion object.
+// Ключ должен быть константным, чтобы мы точно знали, что он не изменится
+    companion object {
+        const val SEARCH = "SEARCH"
+        const val SEARCH_TEXT = ""
     }
 
 }

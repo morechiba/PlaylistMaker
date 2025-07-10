@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/input_bg"
         android:orientation="horizontal"
         android:focusable="true"
@@ -52,11 +53,6 @@
             android:src="@drawable/clear"
             android:visibility="gone" />
     </FrameLayout>
-
-     <TextView
-        android:id="@+id/searchHint"
-        style="@style/searchHint"
-        android:text="@string/search_hint" />
 
     <LinearLayout
         android:id="@+id/search_history"
