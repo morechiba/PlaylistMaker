@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -58,6 +59,7 @@ class SearchActivity : AppCompatActivity() {
         var trackListHistory = searchHistory.getTracks()
         val recyclerHistory = findViewById<RecyclerView>(R.id.trackListHistory)
         var adapterHistory = Adapter(trackListHistory)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
 
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener {
@@ -65,11 +67,14 @@ class SearchActivity : AppCompatActivity() {
         }
 
         fun updateTrackListHistory() {
+            progressBar.setVisibility(View.VISIBLE)
             trackListHistory = searchHistory.getTracks()
             adapterHistory = Adapter(trackListHistory)
             recyclerHistory.adapter = adapterHistory
             recyclerHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            if(trackListHistory.size > 0) searchHistoryBlock.setVisibility(View.VISIBLE)
+            if(trackListHistory.size > 0) {
+                searchHistoryBlock.setVisibility(View.VISIBLE)
+            }
         }
         updateTrackListHistory()
 
@@ -128,6 +133,7 @@ class SearchActivity : AppCompatActivity() {
                 placeholderNoConnection.setVisibility(View.GONE)
                 searchHistoryBlock.setVisibility(View.GONE)
                 recycler.setVisibility(View.GONE)
+                progressBar.setVisibility(View.VISIBLE)
 
                 itunesSearch.search(editText.text.toString()).enqueue(object : Callback<SearchResponse> {
                     override fun onResponse(
@@ -142,15 +148,19 @@ class SearchActivity : AppCompatActivity() {
                                 adapter.notifyDataSetChanged()
                                 if (trackList.isEmpty()) {
                                     placeholderNoFound.setVisibility(View.VISIBLE)
+                                    progressBar.setVisibility(View.GONE)
                                 } else {
                                     recycler.setVisibility(View.VISIBLE)
+                                    progressBar.setVisibility(View.GONE)
                                 }
                             } else {
                                 placeholderNoFound.setVisibility(View.VISIBLE)
+                                progressBar.setVisibility(View.GONE)
                             }
 
                         } else {
                             placeholderNoConnection.setVisibility(View.VISIBLE)
+                            progressBar.setVisibility(View.GONE)
 
                         }
                     }
