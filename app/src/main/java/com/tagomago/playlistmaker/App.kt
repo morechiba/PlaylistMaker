@@ -40,5 +40,6 @@ class App: Application() {
     companion object{
         const val PLAYLISTMAKER_PREFERENCES = "playlistmaker_preferences"
         const val MODE_NIGHTS = "mode_nights_yes"
+        const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

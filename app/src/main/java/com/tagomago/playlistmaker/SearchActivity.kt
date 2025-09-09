@@ -2,6 +2,8 @@ package com.tagomago.playlistmaker
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -67,7 +69,6 @@ class SearchActivity : AppCompatActivity() {
         }
 
         fun updateTrackListHistory() {
-            progressBar.setVisibility(View.VISIBLE)
             trackListHistory = searchHistory.getTracks()
             adapterHistory = Adapter(trackListHistory)
             recyclerHistory.adapter = adapterHistory
