@@ -1,5 +1,6 @@
 package com.tagomago.playlistmaker
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -16,6 +17,9 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
+    var mediaPlayer = MediaPlayer()
+    var playerState = STATE_DEFAULT
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -26,10 +30,13 @@ class PlayerActivity : AppCompatActivity() {
             insets
         }
 
+
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener() {
             finish()
         }
+
+
 
         val trackData = intent.getStringExtra(TRACK_DATA)
         val gson = Gson()
@@ -45,6 +52,9 @@ class PlayerActivity : AppCompatActivity() {
         val trackYearLabel = findViewById<TextView>(R.id.trackYearLabel)
         val trackGenre = findViewById<TextView>(R.id.trackGenre)
         val trackCountry = findViewById<TextView>(R.id.trackCountry)
+        val trackUrlShort = track.previewUrl
+
+        var play = findViewById<ImageView>(R.id.buttonCenter)
 
         fun getCoverUrl() = track.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
 
@@ -53,6 +63,7 @@ class PlayerActivity : AppCompatActivity() {
         trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
         trackGenre.text = track.primaryGenreName
         trackCountry.text = track.country
+
 
         if(track.collectionName.isEmpty()){
             trackAlbum.visibility = View.GONE
@@ -75,5 +86,55 @@ class PlayerActivity : AppCompatActivity() {
                 .placeholder(R.drawable.placeholder_cover)
                 .into(trackImage)
 
+        fun preparePlayer() {
+            mediaPlayer.setDataSource(trackUrlShort)
+            mediaPlayer.prepareAsync()
+            mediaPlayer.setOnPreparedListener {
+                play.isEnabled = true
+                playerState = STATE_PREPARED
+            }
+            mediaPlayer.setOnCompletionListener {
+                playerState = STATE_PREPARED
+            }
+        }
+        fun startPlayer() {
+            mediaPlayer.start()
+            playerState = STATE_PLAYING
+        }
+
+        fun pausePlayer() {
+            mediaPlayer.pause()
+            playerState = STATE_PAUSED
+        }
+
+        fun playbackControl() {
+            when(playerState) {
+                STATE_PLAYING -> {
+                    pausePlayer()
+                }
+                STATE_PREPARED, STATE_PAUSED -> {
+                    startPlayer()
+                }
+            }
+        }
+
+
+        preparePlayer()
+
+        play.setOnClickListener {
+            playbackControl()
+        }
     }
+
+
+
+
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+    }
+
+
 }
