@@ -111,18 +111,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                searchClear.visibility = clearButtonVisibility(p0)
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        })
-
         val adapter = Adapter(trackList)
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -174,6 +162,29 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
+
+
+        val searchRunnable = Runnable { searchSong() }
+        val handler = Handler(Looper.getMainLooper())
+
+        fun searchDebounce() {
+            handler.removeCallbacks(searchRunnable)
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        }
+
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                searchClear.visibility = clearButtonVisibility(p0)
+                searchDebounce()
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
+
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchSong()
@@ -203,6 +214,7 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val SEARCH = "SEARCH"
         const val SEARCH_TEXT = ""
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
 }
