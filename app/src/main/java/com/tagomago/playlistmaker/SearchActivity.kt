@@ -185,12 +185,6 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
-        editText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchSong()
-            }
-            false
-        }
 
         val updateButton = findViewById<Button>(R.id.placeholder_button)
         updateButton.setOnClickListener {
