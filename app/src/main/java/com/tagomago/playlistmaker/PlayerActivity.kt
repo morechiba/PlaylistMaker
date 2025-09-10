@@ -25,9 +25,11 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var currentPosition: TextView
     lateinit var handler: Handler
 
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
+
     val timerRun = object: Runnable {
         override fun run() {
-            currentPosition.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
+            currentPosition.setText(dateFormat.format(mediaPlayer.currentPosition))
             handler.postDelayed(this, TIMER_STEP)
         }
 
