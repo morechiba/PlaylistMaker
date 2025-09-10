@@ -19,6 +19,41 @@ import java.util.Locale
 class PlayerActivity : AppCompatActivity() {
     var mediaPlayer = MediaPlayer()
     var playerState = STATE_DEFAULT
+    var play = findViewById<ImageView>(R.id.buttonCenter)
+
+
+    fun startPlayer() {
+        mediaPlayer.start()
+        play.setImageResource(R.drawable.player_play)
+        playerState = STATE_PLAYING
+    }
+
+    fun pausePlayer() {
+        mediaPlayer.pause()
+        play.setImageResource(R.drawable.player_pause)
+        playerState = STATE_PAUSED
+    }
+
+    fun playbackControl() {
+        when(playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +72,6 @@ class PlayerActivity : AppCompatActivity() {
         }
 
 
-
         val trackData = intent.getStringExtra(TRACK_DATA)
         val gson = Gson()
         val track: Track = gson.fromJson(trackData, Track::class.java)
@@ -53,8 +87,6 @@ class PlayerActivity : AppCompatActivity() {
         val trackGenre = findViewById<TextView>(R.id.trackGenre)
         val trackCountry = findViewById<TextView>(R.id.trackCountry)
         val trackUrlShort = track.previewUrl
-
-        var play = findViewById<ImageView>(R.id.buttonCenter)
 
         fun getCoverUrl() = track.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
 
@@ -86,6 +118,7 @@ class PlayerActivity : AppCompatActivity() {
                 .placeholder(R.drawable.placeholder_cover)
                 .into(trackImage)
 
+
         fun preparePlayer() {
             mediaPlayer.setDataSource(trackUrlShort)
             mediaPlayer.prepareAsync()
@@ -97,27 +130,6 @@ class PlayerActivity : AppCompatActivity() {
                 playerState = STATE_PREPARED
             }
         }
-        fun startPlayer() {
-            mediaPlayer.start()
-            playerState = STATE_PLAYING
-        }
-
-        fun pausePlayer() {
-            mediaPlayer.pause()
-            playerState = STATE_PAUSED
-        }
-
-        fun playbackControl() {
-            when(playerState) {
-                STATE_PLAYING -> {
-                    pausePlayer()
-                }
-                STATE_PREPARED, STATE_PAUSED -> {
-                    startPlayer()
-                }
-            }
-        }
-
 
         preparePlayer()
 
@@ -126,15 +138,11 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-
-
-
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
     }
-
 
 }
