@@ -19,6 +19,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
@@ -172,18 +173,11 @@ class SearchActivity : AppCompatActivity() {
             handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
         }
 
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+        editText.doOnTextChanged { text, _, _, _ ->
+        searchClear.visibility = clearButtonVisibility(text)
+            searchDebounce()
+        }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                searchClear.visibility = clearButtonVisibility(p0)
-                searchDebounce()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        })
 
 
         val updateButton = findViewById<Button>(R.id.placeholder_button)
