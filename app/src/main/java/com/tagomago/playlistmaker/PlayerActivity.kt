@@ -152,7 +152,7 @@ class PlayerActivity : AppCompatActivity() {
             mediaPlayer.setOnCompletionListener {
                 playerState = STATE_PREPARED
                 handler.removeCallbacks(timerRun)
-                currentPosition.setText("00:00")
+                currentPosition.setText(getString(R.string.current_position_start))
                 play.setImageResource(R.drawable.player_play)
             }
         }
