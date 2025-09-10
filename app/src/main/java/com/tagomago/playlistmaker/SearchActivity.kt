@@ -2,6 +2,8 @@ package com.tagomago.playlistmaker
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -11,11 +13,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
@@ -58,6 +62,7 @@ class SearchActivity : AppCompatActivity() {
         var trackListHistory = searchHistory.getTracks()
         val recyclerHistory = findViewById<RecyclerView>(R.id.trackListHistory)
         var adapterHistory = Adapter(trackListHistory)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
 
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener {
@@ -69,7 +74,9 @@ class SearchActivity : AppCompatActivity() {
             adapterHistory = Adapter(trackListHistory)
             recyclerHistory.adapter = adapterHistory
             recyclerHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            if(trackListHistory.size > 0) searchHistoryBlock.setVisibility(View.VISIBLE)
+            if(trackListHistory.size > 0) {
+                searchHistoryBlock.setVisibility(View.VISIBLE)
+            }
         }
         updateTrackListHistory()
 
@@ -105,18 +112,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                searchClear.visibility = clearButtonVisibility(p0)
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        })
-
         val adapter = Adapter(trackList)
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -128,6 +123,7 @@ class SearchActivity : AppCompatActivity() {
                 placeholderNoConnection.setVisibility(View.GONE)
                 searchHistoryBlock.setVisibility(View.GONE)
                 recycler.setVisibility(View.GONE)
+                progressBar.setVisibility(View.VISIBLE)
 
                 itunesSearch.search(editText.text.toString()).enqueue(object : Callback<SearchResponse> {
                     override fun onResponse(
@@ -142,15 +138,19 @@ class SearchActivity : AppCompatActivity() {
                                 adapter.notifyDataSetChanged()
                                 if (trackList.isEmpty()) {
                                     placeholderNoFound.setVisibility(View.VISIBLE)
+                                    progressBar.setVisibility(View.GONE)
                                 } else {
                                     recycler.setVisibility(View.VISIBLE)
+                                    progressBar.setVisibility(View.GONE)
                                 }
                             } else {
                                 placeholderNoFound.setVisibility(View.VISIBLE)
+                                progressBar.setVisibility(View.GONE)
                             }
 
                         } else {
                             placeholderNoConnection.setVisibility(View.VISIBLE)
+                            progressBar.setVisibility(View.GONE)
 
                         }
                     }
@@ -163,12 +163,22 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        editText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchSong()
-            }
-            false
+
+
+        val searchRunnable = Runnable { searchSong() }
+        val handler = Handler(Looper.getMainLooper())
+
+        fun searchDebounce() {
+            handler.removeCallbacks(searchRunnable)
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
         }
+
+        editText.doOnTextChanged { text, _, _, _ ->
+        searchClear.visibility = clearButtonVisibility(text)
+            searchDebounce()
+        }
+
+
 
         val updateButton = findViewById<Button>(R.id.placeholder_button)
         updateButton.setOnClickListener {
@@ -192,6 +202,7 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val SEARCH = "SEARCH"
         const val SEARCH_TEXT = ""
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
 }

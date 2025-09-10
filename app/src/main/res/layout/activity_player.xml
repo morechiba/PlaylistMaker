@@ -67,7 +67,7 @@
         <TextView
             android:id="@+id/trackTimePosition"
             style="@style/TrackTime"
-            android:text="0:30" />
+            android:text="@string/current_position_start" />
 
         <TextView
             android:id="@+id/trackTimeLabel"
