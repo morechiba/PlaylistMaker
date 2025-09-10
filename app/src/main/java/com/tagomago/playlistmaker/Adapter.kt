@@ -23,19 +23,6 @@ class Adapter(private val tracks: MutableList<Track>) : RecyclerView.Adapter<Vie
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(tracks[position])
 
-        var isClickAllowed = true
-
-        val handler = Handler(Looper.getMainLooper())
-
-        fun clickDebounce() : Boolean {
-            val current = isClickAllowed
-            if (isClickAllowed) {
-                isClickAllowed = false
-                handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-            }
-            return current
-        }
-
         holder.itemView.setOnClickListener {
             if (clickDebounce()) {
                 val track = tracks[position]
@@ -53,6 +40,19 @@ class Adapter(private val tracks: MutableList<Track>) : RecyclerView.Adapter<Vie
                 holder.itemView.context.startActivity(displayIntent)
             }
         }
+    }
+
+    private var isClickAllowed = true
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 
     override fun getItemCount() = tracks.size
