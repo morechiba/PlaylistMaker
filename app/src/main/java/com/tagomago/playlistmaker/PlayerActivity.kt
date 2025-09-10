@@ -2,6 +2,8 @@ package com.tagomago.playlistmaker
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -19,40 +21,33 @@ import java.util.Locale
 class PlayerActivity : AppCompatActivity() {
     var mediaPlayer = MediaPlayer()
     var playerState = STATE_DEFAULT
-    var play = findViewById<ImageView>(R.id.buttonCenter)
+    lateinit var play: ImageView
+    lateinit var currentPosition: TextView
+    lateinit var handler: Handler
 
+    val timerRun = object: Runnable {
+        override fun run() {
+            currentPosition.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
+            handler.postDelayed(this, TIMER_STEP)
+        }
 
-    fun startPlayer() {
-        mediaPlayer.start()
-        play.setImageResource(R.drawable.player_play)
-        playerState = STATE_PLAYING
     }
 
     fun pausePlayer() {
         mediaPlayer.pause()
-        play.setImageResource(R.drawable.player_pause)
+        play.setImageResource(R.drawable.player_play)
         playerState = STATE_PAUSED
-    }
-
-    fun playbackControl() {
-        when(playerState) {
-            STATE_PLAYING -> {
-                pausePlayer()
-            }
-            STATE_PREPARED, STATE_PAUSED -> {
-                startPlayer()
-            }
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        pausePlayer()
+        handler.removeCallbacks(timerRun)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,8 +82,10 @@ class PlayerActivity : AppCompatActivity() {
         val trackGenre = findViewById<TextView>(R.id.trackGenre)
         val trackCountry = findViewById<TextView>(R.id.trackCountry)
         val trackUrlShort = track.previewUrl
-
+        play = findViewById<ImageView>(R.id.buttonCenter)
         fun getCoverUrl() = track.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
+
+
 
         trackName.text = track.trackName
         trackArtist.text = track.artistName
@@ -96,6 +93,8 @@ class PlayerActivity : AppCompatActivity() {
         trackGenre.text = track.primaryGenreName
         trackCountry.text = track.country
 
+        handler = Handler(Looper.getMainLooper())
+        currentPosition = findViewById<TextView>(R.id.trackTimePosition)
 
         if(track.collectionName.isEmpty()){
             trackAlbum.visibility = View.GONE
@@ -119,6 +118,28 @@ class PlayerActivity : AppCompatActivity() {
                 .into(trackImage)
 
 
+
+
+        fun startPlayer() {
+            mediaPlayer.start()
+            play.setImageResource(R.drawable.player_pause)
+            playerState = STATE_PLAYING
+            handler.postDelayed(timerRun, TIMER_STEP)
+        }
+
+
+
+        fun playbackControl() {
+            when(playerState) {
+                STATE_PLAYING -> {
+                    pausePlayer()
+                }
+                STATE_PREPARED, STATE_PAUSED -> {
+                    startPlayer()
+                }
+            }
+        }
+
         fun preparePlayer() {
             mediaPlayer.setDataSource(trackUrlShort)
             mediaPlayer.prepareAsync()
@@ -128,6 +149,9 @@ class PlayerActivity : AppCompatActivity() {
             }
             mediaPlayer.setOnCompletionListener {
                 playerState = STATE_PREPARED
+                handler.removeCallbacks(timerRun)
+                currentPosition.setText("00:00")
+                play.setImageResource(R.drawable.player_play)
             }
         }
 
@@ -136,13 +160,16 @@ class PlayerActivity : AppCompatActivity() {
         play.setOnClickListener {
             playbackControl()
         }
+
     }
+
 
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
+        private const val TIMER_STEP = 500L
     }
 
 }
