@@ -1,13 +1,10 @@
-package com.tagomago.playlistmaker
+package com.tagomago.playlistmaker.ui
 
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -22,7 +19,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tagomago.playlistmaker.Adapter
 import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
+import com.tagomago.playlistmaker.R
+import com.tagomago.playlistmaker.SearchHistory
+import com.tagomago.playlistmaker.SearchResponse
+import com.tagomago.playlistmaker.data.network.ITunesApi
+import com.tagomago.playlistmaker.domain.models.Track
 import retrofit2.Retrofit
 import retrofit2.Callback
 import retrofit2.Call

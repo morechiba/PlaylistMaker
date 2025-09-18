@@ -1,4 +1,4 @@
-package com.tagomago.playlistmaker
+package com.tagomago.playlistmaker.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.tagomago.playlistmaker.App
+import com.tagomago.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,5 @@
-package com.tagomago.playlistmaker
+package com.tagomago.playlistmaker.data.network
+import com.tagomago.playlistmaker.SearchResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
