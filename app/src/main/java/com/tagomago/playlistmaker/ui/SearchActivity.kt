@@ -1,5 +1,6 @@
 package com.tagomago.playlistmaker.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -14,8 +15,10 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.Consumer
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
@@ -56,10 +59,47 @@ class SearchActivity : AppCompatActivity() {
         val recyclerHistory = findViewById<RecyclerView>(R.id.trackListHistory)
         var adapterHistory = Adapter(trackListHistory)
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        val updateButton = findViewById<Button>(R.id.placeholder_button)
 
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener {
             finish()
+        }
+
+        val recycler = findViewById<RecyclerView>(R.id.trackList)
+        val searchClear = findViewById<ImageView>(R.id.search_clear)
+
+        val adapter = Adapter(trackList)
+        recycler.adapter = adapter
+        recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        val searchInteractor = Creator.provideTrackInteractor()
+
+        val trackConsumer: TrackInteractor.TrackConsumer = object: TrackInteractor.TrackConsumer
+        {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun consume(foundTracks: List<Track>) {
+                if(foundTracks.isNotEmpty()){
+                    trackList.addAll(foundTracks)
+                    adapter.notifyDataSetChanged()
+
+                    if (trackList.isEmpty()) {
+                        placeholderNoFound.setVisibility(View.VISIBLE)
+                        progressBar.setVisibility(View.GONE)
+                    } else {
+                        recycler.setVisibility(View.VISIBLE)
+                        progressBar.setVisibility(View.GONE)
+                    }
+                } else{
+                    placeholderNoFound.setVisibility(View.VISIBLE)
+                    progressBar.setVisibility(View.GONE)
+                }
+            }
+        }
+
+        override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
+            placeholderNoConnection.setVisibility(View.VISIBLE)
+            progressBar.setVisibility(View.GONE)
         }
 
         fun updateTrackListHistory() {
@@ -85,8 +125,6 @@ class SearchActivity : AppCompatActivity() {
             updateTrackListHistory()
         }
 
-        val recycler = findViewById<RecyclerView>(R.id.trackList)
-        val searchClear = findViewById<ImageView>(R.id.search_clear)
         searchClear.setOnClickListener {
             editText.setText("")
             editText.clearFocus()
@@ -105,10 +143,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        val adapter = Adapter(trackList)
-        recycler.adapter = adapter
-        recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
         fun searchSong() {
             trackList.clear()
             if (editText.text.isNotEmpty()) {
@@ -118,46 +152,18 @@ class SearchActivity : AppCompatActivity() {
                 recycler.setVisibility(View.GONE)
                 progressBar.setVisibility(View.VISIBLE)
 
-                val searchInteractor = Creator.provideTrackInteractor()
-                val consumer= TrackConsumer = consume
+                searchInteractor.search(editText.text.toString(), trackConsumer)
 
-                searchInteractor.search(editText.text.toString(), searchInteractor.TrackConsumer) {
-
-
-                        if (Response().resultCode != 0) {
-                            val resultList = searchInteractor.TrackConsumer
-
-                            if (resultList?.isNotEmpty() == true) {
-                                trackList.addAll(resultList!!)
-                                adapter.notifyDataSetChanged()
-                                if (trackList.isEmpty()) {
-                                    placeholderNoFound.setVisibility(View.VISIBLE)
-                                    progressBar.setVisibility(View.GONE)
-                                } else {
-                                    recycler.setVisibility(View.VISIBLE)
-                                    progressBar.setVisibility(View.GONE)
-                                }
-                            } else {
-                                placeholderNoFound.setVisibility(View.VISIBLE)
-                                progressBar.setVisibility(View.GONE)
-                            }
-
-                        } else {
-                            placeholderNoConnection.setVisibility(View.VISIBLE)
-                            progressBar.setVisibility(View.GONE)
-
-                        }
-                    }
-
-                    override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
-                        placeholderNoConnection.setVisibility(View.VISIBLE)
-                    }
-
-                }
+            } else {
+                //когда нет связи - в другое место?
+                placeholderNoConnection.setVisibility(View.VISIBLE)
+                progressBar.setVisibility(View.GONE)
             }
         }
 
-
+        updateButton.setOnClickListener {
+            searchSong()
+        }
 
         val searchRunnable = Runnable { searchSong() }
         val handler = Handler(Looper.getMainLooper())
@@ -168,17 +174,12 @@ class SearchActivity : AppCompatActivity() {
         }
 
         editText.doOnTextChanged { text, _, _, _ ->
-        searchClear.visibility = clearButtonVisibility(text)
+            searchClear.visibility = clearButtonVisibility(text)
             searchDebounce()
         }
 
-
-
-        val updateButton = findViewById<Button>(R.id.placeholder_button)
-        updateButton.setOnClickListener {
-            searchSong()
-        }
     }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
