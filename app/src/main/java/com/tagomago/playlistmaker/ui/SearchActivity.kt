@@ -37,7 +37,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var editText:EditText
     private lateinit var searchHint:TextView
 
-   val trackList = mutableListOf<Track>()
+    val trackList = mutableListOf<Track>()
+
+    private var handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,30 +81,34 @@ class SearchActivity : AppCompatActivity() {
         {
             @SuppressLint("NotifyDataSetChanged")
             override fun consume(foundTracks: List<Track>) {
-                if(foundTracks.isNotEmpty()){
-                    trackList.addAll(foundTracks)
-                    adapter.notifyDataSetChanged()
-
-                    if (trackList.isEmpty()) {
-                        placeholderNoFound.setVisibility(View.VISIBLE)
+                handler.post {
+                    if(Response().resultCode == 400){
+                        placeholderNoConnection.setVisibility(View.VISIBLE)
                         progressBar.setVisibility(View.GONE)
                     } else {
-                        recycler.setVisibility(View.VISIBLE)
-                        progressBar.setVisibility(View.GONE)
+
+                        if (foundTracks.isNotEmpty()) {
+                            trackList.addAll(foundTracks)
+                            adapter.notifyDataSetChanged()
+
+                            if (trackList.isEmpty()) {
+                                placeholderNoFound.setVisibility(View.VISIBLE)
+                                progressBar.setVisibility(View.GONE)
+                            } else {
+                                recycler.setVisibility(View.VISIBLE)
+                                progressBar.setVisibility(View.GONE)
+                                placeholderNoFound.setVisibility(View.GONE)
+                                placeholderNoConnection.setVisibility(View.GONE)
+                            }
+                        }
                     }
-                } else{
-                    placeholderNoFound.setVisibility(View.VISIBLE)
-                    progressBar.setVisibility(View.GONE)
                 }
             }
         }
 
-        override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
-            placeholderNoConnection.setVisibility(View.VISIBLE)
-            progressBar.setVisibility(View.GONE)
-        }
-
         fun updateTrackListHistory() {
+            placeholderNoFound.setVisibility(View.GONE)
+            placeholderNoConnection.setVisibility(View.GONE)
             trackListHistory = searchHistory.getTracks()
             adapterHistory = Adapter(trackListHistory)
             recyclerHistory.adapter = adapterHistory
@@ -153,10 +159,7 @@ class SearchActivity : AppCompatActivity() {
                 progressBar.setVisibility(View.VISIBLE)
 
                 searchInteractor.search(editText.text.toString(), trackConsumer)
-
             } else {
-                //когда нет связи - в другое место?
-                placeholderNoConnection.setVisibility(View.VISIBLE)
                 progressBar.setVisibility(View.GONE)
             }
         }
