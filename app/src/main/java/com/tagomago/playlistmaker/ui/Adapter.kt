@@ -1,4 +1,4 @@
-package com.tagomago.playlistmaker
+package com.tagomago.playlistmaker.ui
 
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.tagomago.playlistmaker.App.Companion.CLICK_DEBOUNCE_DELAY
 import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
+import com.tagomago.playlistmaker.R
+import com.tagomago.playlistmaker.SearchHistory
+import com.tagomago.playlistmaker.domain.model.Track
 
 const val TRACK_DATA = "trackData"
 

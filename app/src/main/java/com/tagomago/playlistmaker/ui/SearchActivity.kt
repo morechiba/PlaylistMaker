@@ -16,21 +16,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.tagomago.playlistmaker.Adapter
 import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
+import com.tagomago.playlistmaker.Creator
 import com.tagomago.playlistmaker.R
 import com.tagomago.playlistmaker.SearchHistory
-import com.tagomago.playlistmaker.SearchResponse
-import com.tagomago.playlistmaker.data.network.ITunesApi
-import com.tagomago.playlistmaker.domain.models.Track
-import retrofit2.Retrofit
-import retrofit2.Callback
+import com.tagomago.playlistmaker.data.dto.Response
+import com.tagomago.playlistmaker.data.dto.TrackSearchResponse
+import com.tagomago.playlistmaker.domain.api.TrackInteractor
+import com.tagomago.playlistmaker.domain.model.Track
 import retrofit2.Call
-import retrofit2.Response
-import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
@@ -38,13 +34,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var editText:EditText
     private lateinit var searchHint:TextView
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://itunes.apple.com")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val itunesSearch = retrofit.create(ITunesApi::class.java)
-    val trackList = mutableListOf<Track>()
+   val trackList = mutableListOf<Track>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,14 +118,15 @@ class SearchActivity : AppCompatActivity() {
                 recycler.setVisibility(View.GONE)
                 progressBar.setVisibility(View.VISIBLE)
 
-                itunesSearch.search(editText.text.toString()).enqueue(object : Callback<SearchResponse> {
-                    override fun onResponse(
-                        call: Call<SearchResponse>,
-                        response: Response<SearchResponse>
-                    ) {
+                val searchInteractor = Creator.provideTrackInteractor()
+                val consumer= TrackConsumer = consume
 
-                        if (response.isSuccessful) {
-                            val resultList = response.body()?.results
+                searchInteractor.search(editText.text.toString(), searchInteractor.TrackConsumer) {
+
+
+                        if (Response().resultCode != 0) {
+                            val resultList = searchInteractor.TrackConsumer
+
                             if (resultList?.isNotEmpty() == true) {
                                 trackList.addAll(resultList!!)
                                 adapter.notifyDataSetChanged()
@@ -158,11 +149,11 @@ class SearchActivity : AppCompatActivity() {
                         }
                     }
 
-                    override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                    override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
                         placeholderNoConnection.setVisibility(View.VISIBLE)
                     }
 
-                })
+                }
             }
         }
 

@@ -3,6 +3,7 @@ package com.tagomago.playlistmaker
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.tagomago.playlistmaker.domain.model.Track
 
 
 class SearchHistory(val sharedPrefs: SharedPreferences) {
