@@ -6,10 +6,11 @@ import com.tagomago.playlistmaker.domain.api.TrackRepository
 import com.tagomago.playlistmaker.domain.model.Track
 
 class TrackRepositoryImpl(private val networkClient: NetworkClient): TrackRepository {
-
+    override var resultCode = 0
     override fun search(expression: String): List<Track> {
         val response = networkClient.doRequest(TrackSearchRequest(expression))
-        if (response.resultCode == 200) {
+        resultCode = response.resultCode
+        if (resultCode == 200) {
             return (response as TrackSearchResponse).results.map {
                 Track(
                     it.trackName,

@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -80,29 +81,36 @@ class SearchActivity : AppCompatActivity() {
         val trackConsumer: TrackInteractor.TrackConsumer = object: TrackInteractor.TrackConsumer
         {
             @SuppressLint("NotifyDataSetChanged")
-            override fun consume(foundTracks: List<Track>) {
+            override fun consume(foundTracks: List<Track>, resultCode: Int) {
                 handler.post {
-                    if(Response().resultCode == 400){
+                    progressBar.setVisibility(View.GONE)
+                    if (resultCode != 0){
+                        if (resultCode == 400) {
+                            placeholderNoConnection.setVisibility(View.VISIBLE)
+                            progressBar.setVisibility(View.GONE)
+
+                        } else if (foundTracks.isNotEmpty()) {
+                            trackList.addAll(foundTracks)
+                            recycler.setVisibility(View.VISIBLE)
+                            adapter.notifyDataSetChanged()
+                            placeholderNoFound.setVisibility(View.GONE)
+                            placeholderNoConnection.setVisibility(View.GONE)
+                        } else {
+
+                            placeholderNoFound.setVisibility(View.VISIBLE)
+                            placeholderNoConnection.setVisibility(View.GONE)
+                        }
+
+                    } else {
                         placeholderNoConnection.setVisibility(View.VISIBLE)
                         progressBar.setVisibility(View.GONE)
-                    } else {
-
-                        if (foundTracks.isNotEmpty()) {
-                            trackList.addAll(foundTracks)
-                            adapter.notifyDataSetChanged()
-
-                            if (trackList.isEmpty()) {
-                                placeholderNoFound.setVisibility(View.VISIBLE)
-                                progressBar.setVisibility(View.GONE)
-                            } else {
-                                recycler.setVisibility(View.VISIBLE)
-                                progressBar.setVisibility(View.GONE)
-                                placeholderNoFound.setVisibility(View.GONE)
-                                placeholderNoConnection.setVisibility(View.GONE)
-                            }
-                        }
                     }
+
+
+
+
                 }
+
             }
         }
 
@@ -169,7 +177,6 @@ class SearchActivity : AppCompatActivity() {
         }
 
         val searchRunnable = Runnable { searchSong() }
-        val handler = Handler(Looper.getMainLooper())
 
         fun searchDebounce() {
             handler.removeCallbacks(searchRunnable)
