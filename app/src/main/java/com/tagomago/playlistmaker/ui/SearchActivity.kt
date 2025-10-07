@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -16,7 +15,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.util.Consumer
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doOnTextChanged
@@ -25,12 +23,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
 import com.tagomago.playlistmaker.Creator
 import com.tagomago.playlistmaker.R
-import com.tagomago.playlistmaker.SearchHistory
-import com.tagomago.playlistmaker.data.dto.Response
-import com.tagomago.playlistmaker.data.dto.TrackSearchResponse
+import com.tagomago.playlistmaker.domain.SearchHistory
 import com.tagomago.playlistmaker.domain.api.TrackInteractor
 import com.tagomago.playlistmaker.domain.model.Track
-import retrofit2.Call
 
 class SearchActivity : AppCompatActivity() {
 

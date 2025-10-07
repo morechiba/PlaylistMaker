@@ -11,7 +11,7 @@ import com.google.gson.Gson
 import com.tagomago.playlistmaker.App.Companion.CLICK_DEBOUNCE_DELAY
 import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
 import com.tagomago.playlistmaker.R
-import com.tagomago.playlistmaker.SearchHistory
+import com.tagomago.playlistmaker.domain.SearchHistory
 import com.tagomago.playlistmaker.domain.model.Track
 
 const val TRACK_DATA = "trackData"

@@ -1,4 +1,4 @@
-package com.tagomago.playlistmaker
+package com.tagomago.playlistmaker.domain
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
