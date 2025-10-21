@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.tagomago.playlistmaker.App
+import com.tagomago.playlistmaker.presentation.App
 import com.tagomago.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {

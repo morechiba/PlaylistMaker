@@ -20,10 +20,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
 import com.tagomago.playlistmaker.Creator
 import com.tagomago.playlistmaker.R
-import com.tagomago.playlistmaker.domain.SearchHistory
 import com.tagomago.playlistmaker.domain.api.TrackInteractor
 import com.tagomago.playlistmaker.domain.model.Track
 
@@ -51,8 +49,8 @@ class SearchActivity : AppCompatActivity() {
         val placeholderNoFound = findViewById<LinearLayout>(R.id.placeholder_no_found)
         val placeholderNoConnection = findViewById<LinearLayout>(R.id.placeholder_error_connection)
         val searchHistoryBlock = findViewById<LinearLayout>(R.id.search_history)
-        val sharedPrefs = getSharedPreferences(PLAYLISTMAKER_PREFERENCES, MODE_PRIVATE)
-        val searchHistory = SearchHistory(sharedPrefs)
+        val searchHistory = Creator.provideTrackHistoryInteractor()
+
         var trackListHistory = searchHistory.getTracks()
         val recyclerHistory = findViewById<RecyclerView>(R.id.trackListHistory)
         var adapterHistory = Adapter(trackListHistory)
@@ -66,6 +64,18 @@ class SearchActivity : AppCompatActivity() {
 
         val recycler = findViewById<RecyclerView>(R.id.trackList)
         val searchClear = findViewById<ImageView>(R.id.search_clear)
+        fun updateTrackListHistory() {
+            placeholderNoFound.setVisibility(View.GONE)
+            placeholderNoConnection.setVisibility(View.GONE)
+            trackListHistory = searchHistory.getTracks()
+            adapterHistory = Adapter(trackListHistory)
+            recyclerHistory.adapter = adapterHistory
+            recyclerHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            if(trackListHistory.size > 0) {
+                searchHistoryBlock.visibility = View.VISIBLE
+            }
+        }
+        updateTrackListHistory()
 
         val adapter = Adapter(trackList)
         recycler.adapter = adapter
@@ -81,17 +91,17 @@ class SearchActivity : AppCompatActivity() {
                     progressBar.setVisibility(View.GONE)
                     if (resultCode != 0){
                         if (resultCode == 400) {
-                            placeholderNoConnection.setVisibility(View.VISIBLE)
-                            progressBar.setVisibility(View.GONE)
+                            placeholderNoConnection.visibility = View.VISIBLE
+                            progressBar.visibility = View.GONE
 
                         } else if (foundTracks.isNotEmpty()) {
                             trackList.addAll(foundTracks)
+                            updateTrackListHistory()
                             recycler.setVisibility(View.VISIBLE)
                             adapter.notifyDataSetChanged()
                             placeholderNoFound.setVisibility(View.GONE)
                             placeholderNoConnection.setVisibility(View.GONE)
                         } else {
-
                             placeholderNoFound.setVisibility(View.VISIBLE)
                             placeholderNoConnection.setVisibility(View.GONE)
                         }
@@ -108,19 +118,6 @@ class SearchActivity : AppCompatActivity() {
 
             }
         }
-
-        fun updateTrackListHistory() {
-            placeholderNoFound.setVisibility(View.GONE)
-            placeholderNoConnection.setVisibility(View.GONE)
-            trackListHistory = searchHistory.getTracks()
-            adapterHistory = Adapter(trackListHistory)
-            recyclerHistory.adapter = adapterHistory
-            recyclerHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            if(trackListHistory.size > 0) {
-                searchHistoryBlock.setVisibility(View.VISIBLE)
-            }
-        }
-        updateTrackListHistory()
 
         editText.setOnFocusChangeListener { view, hasFocus ->
             placeholderNoFound.setVisibility(View.GONE)
