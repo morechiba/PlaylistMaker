@@ -8,12 +8,15 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         Creator.initApplication(this)
-        val settingsInteractor = Creator.provideSettingsInteractor()
-        val theme = settingsInteractor.getTheme()
 
-        settingsInteractor.switchTheme(theme)
+        switchTheme(getSavedTheme())
+    }
+
+    fun getSavedTheme(): Boolean {
+        val settingsInteractor = Creator.provideSettingsInteractor()
+        darkTheme = settingsInteractor.getTheme()
+        return darkTheme
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {

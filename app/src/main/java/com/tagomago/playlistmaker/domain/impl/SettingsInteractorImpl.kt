@@ -3,7 +3,7 @@ package com.tagomago.playlistmaker.domain.impl
 import com.tagomago.playlistmaker.domain.api.SettingsInteractor
 import com.tagomago.playlistmaker.domain.api.SettingsRepository
 
-class SettingsInteractorImpl(val repository: SettingsRepository) : SettingsInteractor {
+class SettingsInteractorImpl(private val repository: SettingsRepository) : SettingsInteractor {
     override fun getTheme(): Boolean {
         return repository.getTheme()
     }
