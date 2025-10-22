@@ -1,5 +1,6 @@
-package com.tagomago.playlistmaker.data
+package com.tagomago.playlistmaker.data.repository
 
+import com.tagomago.playlistmaker.data.NetworkClient
 import com.tagomago.playlistmaker.data.dto.TrackSearchRequest
 import com.tagomago.playlistmaker.data.dto.TrackSearchResponse
 import com.tagomago.playlistmaker.domain.api.TrackRepository
