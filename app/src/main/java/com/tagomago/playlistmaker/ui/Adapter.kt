@@ -1,6 +1,5 @@
-package com.tagomago.playlistmaker
+package com.tagomago.playlistmaker.ui
 
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
@@ -8,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import com.tagomago.playlistmaker.App.Companion.CLICK_DEBOUNCE_DELAY
-import com.tagomago.playlistmaker.App.Companion.PLAYLISTMAKER_PREFERENCES
+import com.tagomago.playlistmaker.Creator
+import com.tagomago.playlistmaker.presentation.App.Companion.CLICK_DEBOUNCE_DELAY
+import com.tagomago.playlistmaker.R
+import com.tagomago.playlistmaker.domain.model.Track
 
 const val TRACK_DATA = "trackData"
 
@@ -26,11 +27,8 @@ class Adapter(private val tracks: MutableList<Track>) : RecyclerView.Adapter<Vie
         holder.itemView.setOnClickListener {
             if (clickDebounce()) {
                 val track = tracks[position]
-                val preferences = holder.itemView.context.getSharedPreferences(
-                    PLAYLISTMAKER_PREFERENCES,
-                    MODE_PRIVATE
-                )
-                val searchHistory = SearchHistory(preferences)
+
+                val searchHistory = Creator.provideTrackHistoryInteractor()
                 searchHistory.saveTrack(track)
 
                 val displayIntent = Intent(holder.itemView.context, PlayerActivity::class.java)

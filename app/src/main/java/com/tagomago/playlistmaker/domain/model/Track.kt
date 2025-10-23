@@ -1,4 +1,4 @@
-package com.tagomago.playlistmaker
+package com.tagomago.playlistmaker.domain.model
 
 data class Track(
     val trackName: String, // Название композиции

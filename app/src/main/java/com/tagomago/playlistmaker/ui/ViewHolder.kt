@@ -1,4 +1,4 @@
-package com.tagomago.playlistmaker
+package com.tagomago.playlistmaker.ui
 
 import android.view.View
 import android.widget.ImageView
@@ -6,6 +6,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.tagomago.playlistmaker.R
+import com.tagomago.playlistmaker.domain.model.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -32,7 +34,7 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .load(model.artworkUrl100)
             .centerCrop()
             .transform(RoundedCorners(2))
-            .placeholder(R.drawable.placeholder)
+            .placeholder(R.drawable.placeholder_cover)
             .into(trackImage)
 
     }

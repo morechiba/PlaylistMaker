@@ -1,4 +1,4 @@
-package com.tagomago.playlistmaker
+package com.tagomago.playlistmaker.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.tagomago.playlistmaker.Creator
+import com.tagomago.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,11 +30,17 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-        val app = applicationContext as App
-        themeSwitcher.isChecked = app.darkTheme
+        val appSettings = Creator.provideSettingsInteractor()
+        val theme = appSettings.getTheme()
+
+        if(theme) {
+            themeSwitcher.setChecked(true)
+        } else {
+            themeSwitcher.setChecked(false)
+        }
 
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
-            (applicationContext as App).switchTheme(checked)
+            (appSettings).switchTheme(checked)
         }
 
         val buttonShare = findViewById<TextView>(R.id.share)
