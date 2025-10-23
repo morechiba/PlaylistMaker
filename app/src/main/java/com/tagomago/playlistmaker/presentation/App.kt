@@ -5,6 +5,9 @@ import com.tagomago.playlistmaker.Creator
 class App: Application() {
 
     var darkTheme = false
+        // Only the class can modify the theme
+        private set
+
 
     override fun onCreate() {
         super.onCreate()
