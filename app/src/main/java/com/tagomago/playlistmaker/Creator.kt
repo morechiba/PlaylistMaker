@@ -18,7 +18,7 @@ import com.tagomago.playlistmaker.domain.impl.TrackInteractorImpl
 
 object Creator {
 
-    lateinit var application: Application
+    private lateinit var application: Application
 
     fun initApplication (application: Application){
         this.application = application

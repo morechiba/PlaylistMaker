@@ -16,7 +16,8 @@ class TrackHistoryInteractorImpl(private val sharedPrefs: SharedPreferences): Tr
         val item = object : TypeToken<MutableList<Track>>() {}.type
         val trackList: MutableList<Track> = gson.fromJson(searchHistory, item) ?: mutableListOf<Track>()
         trackList.removeIf { it == track }
-        if (trackList.size == 10) {
+        val trackListSize = trackList.size
+        if (trackListSize == 10) {
             trackList.removeAt(9)
         }
         trackList.add(0, track)

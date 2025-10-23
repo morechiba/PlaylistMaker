@@ -16,7 +16,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_margin="@dimen/track_padding"
-                tools:src="@drawable/placeholder"/>
+                tools:src="@drawable/placeholder_cover" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
