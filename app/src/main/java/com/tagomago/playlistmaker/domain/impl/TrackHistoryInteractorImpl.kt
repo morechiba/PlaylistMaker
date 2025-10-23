@@ -8,11 +8,8 @@ import com.tagomago.playlistmaker.domain.api.TrackHistoryInteractor
 import com.tagomago.playlistmaker.domain.model.Track
 
 class TrackHistoryInteractorImpl(private val sharedPrefs: SharedPreferences): TrackHistoryInteractor {
-    companion object {
-        const val SEARCH_HISTORY ="search_history"
-    }
 
-    val gson = Gson()
+    private val gson = Gson()
 
     override fun saveTrack(track: Track) {
         var searchHistory: String? = sharedPrefs.getString(SEARCH_HISTORY, "")
@@ -45,5 +42,9 @@ class TrackHistoryInteractorImpl(private val sharedPrefs: SharedPreferences): Tr
         sharedPrefs.edit {
             putString(SEARCH_HISTORY, "").apply()
         }
+    }
+
+    companion object {
+        const val SEARCH_HISTORY ="search_history"
     }
 }

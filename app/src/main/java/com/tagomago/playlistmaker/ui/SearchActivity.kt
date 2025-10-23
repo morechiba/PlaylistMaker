@@ -12,7 +12,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -22,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tagomago.playlistmaker.Creator
 import com.tagomago.playlistmaker.R
+import com.tagomago.playlistmaker.domain.api.TrackHistoryInteractor
 import com.tagomago.playlistmaker.domain.api.TrackInteractor
 import com.tagomago.playlistmaker.domain.model.Track
 
@@ -29,7 +29,17 @@ class SearchActivity : AppCompatActivity() {
 
     private var editTextValue: String? = SEARCH_TEXT
     private lateinit var editText:EditText
-    private lateinit var searchHint:TextView
+    private lateinit var placeholderNoFound: LinearLayout
+    private lateinit var placeholderNoConnection: LinearLayout
+    private lateinit var searchHistoryBlock: LinearLayout
+    private lateinit var searchHistory: TrackHistoryInteractor
+    private lateinit var adapterHistory: Adapter
+    private lateinit var trackListHistory: MutableList<Track>
+    private lateinit var recycler: RecyclerView
+    private lateinit var recyclerHistory: RecyclerView
+    private lateinit var updateButton: Button
+    private lateinit var progressBar: ProgressBar
+
 
     val trackList = mutableListOf<Track>()
 
@@ -37,6 +47,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_search)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -46,36 +57,26 @@ class SearchActivity : AppCompatActivity() {
         }
 
         editText = findViewById<EditText>(R.id.search)
-        val placeholderNoFound = findViewById<LinearLayout>(R.id.placeholder_no_found)
-        val placeholderNoConnection = findViewById<LinearLayout>(R.id.placeholder_error_connection)
-        val searchHistoryBlock = findViewById<LinearLayout>(R.id.search_history)
-        val searchHistory = Creator.provideTrackHistoryInteractor()
+        placeholderNoFound = findViewById<LinearLayout>(R.id.placeholder_no_found)
+        placeholderNoConnection = findViewById<LinearLayout>(R.id.placeholder_error_connection)
+        searchHistoryBlock = findViewById<LinearLayout>(R.id.search_history)
+        recycler = findViewById<RecyclerView>(R.id.trackList)
+        recyclerHistory = findViewById<RecyclerView>(R.id.trackListHistory)
+        progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        updateButton = findViewById<Button>(R.id.placeholder_button)
+        searchHistory = Creator.provideTrackHistoryInteractor()
+        trackListHistory = searchHistory.getTracks()
 
-        var trackListHistory = searchHistory.getTracks()
-        val recyclerHistory = findViewById<RecyclerView>(R.id.trackListHistory)
-        var adapterHistory = Adapter(trackListHistory)
-        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-        val updateButton = findViewById<Button>(R.id.placeholder_button)
-
+        val searchClearButton = findViewById<ImageView>(R.id.search_clear)
+        val searchHistoryClearButton = findViewById<Button>(R.id.search_history_button)
         val backButton = findViewById<Button>(R.id.back)
+
         backButton.setOnClickListener {
             finish()
         }
 
-        val recycler = findViewById<RecyclerView>(R.id.trackList)
-        val searchClear = findViewById<ImageView>(R.id.search_clear)
-        fun updateTrackListHistory() {
-            placeholderNoFound.setVisibility(View.GONE)
-            placeholderNoConnection.setVisibility(View.GONE)
-            trackListHistory = searchHistory.getTracks()
-            adapterHistory = Adapter(trackListHistory)
-            recyclerHistory.adapter = adapterHistory
-            recyclerHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            if(trackListHistory.size > 0) {
-                searchHistoryBlock.visibility = View.VISIBLE
-            }
-        }
-        updateTrackListHistory()
+        if(trackListHistory.size > 0) searchHistoryBlock.visibility = View.VISIBLE
+
 
         val adapter = Adapter(trackList)
         recycler.adapter = adapter
@@ -88,54 +89,45 @@ class SearchActivity : AppCompatActivity() {
             @SuppressLint("NotifyDataSetChanged")
             override fun consume(foundTracks: List<Track>, resultCode: Int) {
                 handler.post {
-                    progressBar.setVisibility(View.GONE)
+                    progressBar.visibility = View.GONE
+
                     if (resultCode != 0){
                         if (resultCode == 400) {
-                            placeholderNoConnection.visibility = View.VISIBLE
-                            progressBar.visibility = View.GONE
+                            stateNoConnection()
 
                         } else if (foundTracks.isNotEmpty()) {
                             trackList.addAll(foundTracks)
-                            updateTrackListHistory()
-                            recycler.setVisibility(View.VISIBLE)
+
+                            recycler.visibility = View.VISIBLE
                             adapter.notifyDataSetChanged()
-                            placeholderNoFound.setVisibility(View.GONE)
-                            placeholderNoConnection.setVisibility(View.GONE)
+
+                            stateHideAll()
                         } else {
-                            placeholderNoFound.setVisibility(View.VISIBLE)
-                            placeholderNoConnection.setVisibility(View.GONE)
+                            stateNoResults()
                         }
-
                     } else {
-                        placeholderNoConnection.setVisibility(View.VISIBLE)
-                        progressBar.setVisibility(View.GONE)
+                        stateNoConnection()
                     }
-
-
-
-
                 }
-
             }
         }
 
         editText.setOnFocusChangeListener { view, hasFocus ->
-            placeholderNoFound.setVisibility(View.GONE)
-            placeholderNoConnection.setVisibility(View.GONE)
+            stateHideAll()
         }
 
-        val searchHistoryClear = findViewById<Button>(R.id.search_history_button)
-        searchHistoryClear.setOnClickListener{
-            searchHistoryBlock.setVisibility(View.GONE)
+        searchHistoryClearButton.setOnClickListener{
+            stateHideAll()
             searchHistory.clearHistory()
             updateTrackListHistory()
         }
 
-        searchClear.setOnClickListener {
+        searchClearButton.setOnClickListener {
             editText.setText("")
             editText.clearFocus()
-            recycler.setVisibility(View.GONE)
+            recycler.visibility = View.GONE
             updateTrackListHistory()
+            if(trackListHistory.size > 0) searchHistoryBlock.visibility = View.VISIBLE
 
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(editText.windowToken, 0)
@@ -151,16 +143,12 @@ class SearchActivity : AppCompatActivity() {
 
         fun searchSong() {
             trackList.clear()
-            if (editText.text.isNotEmpty()) {
-                placeholderNoFound.setVisibility(View.GONE)
-                placeholderNoConnection.setVisibility(View.GONE)
-                searchHistoryBlock.setVisibility(View.GONE)
-                recycler.setVisibility(View.GONE)
-                progressBar.setVisibility(View.VISIBLE)
-
-                searchInteractor.search(editText.text.toString(), trackConsumer)
+            val searchExpression = editText.text
+            if (searchExpression.isNotEmpty()) {
+                stateProgressBarShow()
+                searchInteractor.search(searchExpression.toString(), trackConsumer)
             } else {
-                progressBar.setVisibility(View.GONE)
+                progressBar.visibility = View.GONE
             }
         }
 
@@ -176,12 +164,52 @@ class SearchActivity : AppCompatActivity() {
         }
 
         editText.doOnTextChanged { text, _, _, _ ->
-            searchClear.visibility = clearButtonVisibility(text)
+            searchClearButton.visibility = clearButtonVisibility(text)
             searchDebounce()
         }
 
     }
+    fun updateTrackListHistory() {
+        placeholderNoFound.visibility = View.GONE
+        placeholderNoConnection.visibility = View.GONE
+        trackListHistory = searchHistory.getTracks()
+        adapterHistory = Adapter(trackListHistory)
+        recyclerHistory.adapter = adapterHistory
+        recyclerHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    }
 
+    fun stateNoConnection() {
+        placeholderNoConnection.visibility = View.VISIBLE
+        placeholderNoFound.visibility = View.GONE
+        progressBar.visibility = View.GONE
+        searchHistoryBlock.visibility = View.GONE
+    }
+    fun stateNoResults() {
+        placeholderNoFound.visibility = View.VISIBLE
+        placeholderNoConnection.visibility = View.GONE
+        progressBar.visibility = View.GONE
+        searchHistoryBlock.visibility = View.GONE
+    }
+
+    fun stateProgressBarShow() {
+        placeholderNoFound.visibility = View.GONE
+        placeholderNoConnection.visibility = View.GONE
+        recycler.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+    }
+
+    fun stateHideAll() {
+        placeholderNoFound.visibility = View.GONE
+        placeholderNoConnection.visibility = View.GONE
+        progressBar.visibility = View.GONE
+        searchHistoryBlock.visibility = View.GONE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateTrackListHistory()
+
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
