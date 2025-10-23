@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.tagomago.playlistmaker.presentation.App
+import com.tagomago.playlistmaker.Creator
 import com.tagomago.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
@@ -30,8 +30,8 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-        val app = applicationContext as App
-        val theme = app.getSavedTheme()
+        val appSettings = Creator.provideSettingsInteractor()
+        val theme = appSettings.getTheme()
 
         if(theme) {
             themeSwitcher.setChecked(true)
@@ -39,9 +39,8 @@ class SettingsActivity : AppCompatActivity() {
             themeSwitcher.setChecked(false)
         }
 
-
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
-            (applicationContext as App).switchTheme(checked)
+            (appSettings).switchTheme(checked)
         }
 
         val buttonShare = findViewById<TextView>(R.id.share)
